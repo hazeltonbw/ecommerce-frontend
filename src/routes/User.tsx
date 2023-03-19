@@ -1,5 +1,4 @@
 import { useLoaderData, useParams } from "react-router-dom";
-import { getUserById } from "../api/users";
 
 export interface UserObject {
   user_id?: Number;
