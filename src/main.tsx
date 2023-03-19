@@ -6,7 +6,6 @@ import Root from "./routes/Root";
 import User from "./routes/User";
 import ErrorPage from "./error-page";
 import Register from "./routes/Register";
-import { userLoader } from "./routes/User";
 // Vite has a different way to access environment variables
 // https://vitejs.dev/guide/env-and-mode.html
 // console.log(import.meta.env.VITE_API_URL);
