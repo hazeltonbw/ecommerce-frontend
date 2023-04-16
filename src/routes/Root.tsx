@@ -1,10 +1,12 @@
 import { Outlet, useLoaderData } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 export const loader = async () => {
   const API_URL = import.meta.env.VITE_API_URL;
   try {
+    return axios.get(API_URL, {withCredentials: true})
     return fetch(`${API_URL}`);
   } catch (err) {
     return { error: err, message: "Error fetching main page." };
