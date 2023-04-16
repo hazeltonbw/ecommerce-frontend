@@ -1,33 +1,48 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import "./index.css";
-import Root from "./routes/Root";
-import User from "./routes/User";
+import Root, { loader as rootLoader } from "./routes/Root";
+import User, { loader as userLoader } from "./routes/User";
 import ErrorPage from "./error-page";
 import Register from "./routes/Register";
-// Vite has a different way to access environment variables
-// https://vitejs.dev/guide/env-and-mode.html
-// console.log(import.meta.env.VITE_API_URL);
-const API_URL = import.meta.env.VITE_API_URL;
+import Login from "./routes/Login";
+import Users, { loader as usersLoader } from "./routes/Users";
+import { action as registrationFormAction } from "./components/RegisterForm";
+import { loginAction } from "./components/LoginForm";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./components/Home";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+    loader: rootLoader,
     children: [
+      {
+        index: true,
+        element: <Home />,
+      },
       {
         path: "auth/register",
         element: <Register />,
+        action: registrationFormAction,
+      },
+      {
+        path: "auth/login",
+        element: <Login />,
+        action: loginAction,
+      },
+      {
+        path: "users",
+        element: <Users />,
+        loader: usersLoader,
       },
       {
         path: "users/:user_id",
         element: <User />,
-        loader: async function ({ params }) {
-          return fetch(`${API_URL}/users/${params.user_id}`);
-        },
+        loader: userLoader,
       },
     ],
   },

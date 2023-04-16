@@ -41,9 +41,16 @@ button {
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-  background-color: white;
+  background-color: theme("colors.sky.900");
+  /* background-color: white; */
   line-height: 1.5;
+  outline: none;
   margin: 0;
+  color: white;
+}
+
+input:focus {
+  outline: none;
 }
 button {
   color: #3992ff;
@@ -66,10 +73,21 @@ button:active {
   width: 100%;
 }
 
-#error-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+.invalid .feedback {
+  color: theme("colors.red.700");
+  text-emphasis-style: bold;
+}
+
+.invalid input[type="email"],
+.invalid input[type="text"],
+.invalid input[type="number"],
+.invalid input[type="password"] {
+  border: 2px solid theme("colors.red.700");
+}
+
+.valid input[type="email"],
+.valid input[type="text"],
+.valid input[type="number"],
+.valid input[type="password"] {
+  border: 2px solid #79c14d;
 }
