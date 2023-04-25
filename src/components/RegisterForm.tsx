@@ -11,6 +11,8 @@ import YupPassword from "yup-password";
 YupPassword(Yup);
 import { TextInputLiveFeedback } from "./TextInputLiveFeedback";
 import FormSubmitButton from "./FormSubmitButton";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { register } from "../features/auth/authSlice";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const baseURL: string = "http://localhost:4000";
@@ -57,8 +59,10 @@ const RegisterSchema = Yup.object().shape({
 
 const RegisterForm = () => {
   const submit = useSubmit();
+  const dispatch = useAppDispatch();
   const actionData = useActionData();
-  const { error, message } = actionData || {};
+  //const { error, message } = actionData || {};
+  const { error, message, status } = useAppSelector((state) => state.auth);
   return (
     <div className="bg-gray-200 text-black p-8 rounded-lg w-[22.5rem] ">
       <h1 className="text-2xl border border-b-gray-300">Register</h1>
@@ -72,7 +76,8 @@ const RegisterForm = () => {
         }}
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
-          submit(values, { method: "post" });
+          dispatch(register(values));
+          // submit(values, { method: "post" });
         }}
       >
         <Form className="flex flex-col gap-2 ">
@@ -113,7 +118,7 @@ const RegisterForm = () => {
             helpText=""
             type="text"
           />
-          <FormSubmitButton buttonText="Register" />
+          <FormSubmitButton buttonText="Register" status={status} />
           {message ? message : null}
         </Form>
       </Formik>

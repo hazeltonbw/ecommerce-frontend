@@ -8,10 +8,13 @@ import Register from "./routes/Register";
 import Login from "./routes/Login";
 import Users, { loader as usersLoader } from "./routes/Users";
 import { action as registrationFormAction } from "./components/RegisterForm";
-import { loginAction } from "./components/LoginForm";
+import { loginAction, loginLoader } from "./components/LoginForm";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import Products from "./routes/Products";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +27,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
+      /* AUTH ROUTES */
       {
         path: "auth/register",
         element: <Register />,
@@ -32,8 +36,9 @@ const router = createBrowserRouter([
       {
         path: "auth/login",
         element: <Login />,
-        action: loginAction,
+        loader: loginLoader,
       },
+      /* USER ROUTES */
       {
         path: "users",
         element: <Users />,
@@ -44,12 +49,19 @@ const router = createBrowserRouter([
         element: <User />,
         loader: userLoader,
       },
+      /* PRODUCT ROUTES */
+      {
+        path: "/products",
+        element: <Products />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
