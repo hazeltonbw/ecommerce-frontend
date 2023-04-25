@@ -1,6 +1,6 @@
 import { useField, FieldHookConfig } from "formik";
 import { useState } from "react";
-import { Checkmark } from "react-checkmark";
+import { FcCheckmark } from "react-icons/fc";
 import PasswordField from "./PasswordField";
 
 // https://formik.org/docs/examples/instant-feedback
@@ -40,7 +40,7 @@ export const TextInputLiveFeedback = ({
               aria-live="polite"
               className="feedback text-sm"
             >
-              {meta.error ? meta.error : <Checkmark size="small" />}
+              {meta.error ? meta.error : <FcCheckmark size={16} />}
             </div>
           ) : null}
         </div>
