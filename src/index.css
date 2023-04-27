@@ -91,3 +91,7 @@ button:active {
 .valid input[type="password"] {
   border: 2px solid #79c14d;
 }
+
+input:autofill {
+  background-color: theme("colors.green.500");
+}
