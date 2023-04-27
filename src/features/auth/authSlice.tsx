@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import axios, { AxiosPromise, AxiosResponse } from "axios";
+import axios from "axios";
 import { UserObject } from "../../routes/User";
 
 interface authState {
@@ -22,17 +22,25 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const login = createAsyncThunk<UserObject, UserObject>(
   "auth/login",
-  async (values) => {
+  async (values, { rejectWithValue, fulfillWithValue }) => {
     const path = "/auth/login";
     const url = API_URL + path;
-    const response = await axios.post(url, values, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-      withCredentials: true,
-    });
-    return response.data;
+    try {
+      const response = await axios.post(url, values, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        return rejectWithValue(error.response.data);
+      }
+    }
   }
 );
 
@@ -79,9 +87,9 @@ export const authSlice = createSlice({
         state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.status = "failed";
-        state.message = "Failed to login. Please try again.";
+        state.message = action.payload;
         state.error = true;
       })
       .addCase(logout.pending, (state) => {
