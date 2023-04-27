@@ -8,7 +8,6 @@ import Register from "./routes/Register";
 import Login from "./routes/Login";
 import Users, { loader as usersLoader } from "./routes/Users";
 import { action as registrationFormAction } from "./components/RegisterForm";
-import { loginAction, loginLoader } from "./components/LoginForm";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
@@ -36,7 +35,6 @@ const router = createBrowserRouter([
       {
         path: "auth/login",
         element: <Login />,
-        loader: loginLoader,
       },
       /* USER ROUTES */
       {
