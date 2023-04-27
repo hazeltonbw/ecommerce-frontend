@@ -1,13 +1,13 @@
-type Props = { isLoggedIn: boolean; setIsLoggedIn: Function };
+type Props = {};
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAppDispatch } from "../hooks";
-import { logout } from "../features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { logout, selectIsLoggedIn } from "../features/auth/authSlice";
 
 const Header = (props: Props) => {
-  const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(false);
   const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   console.log(mobileMenuIsOpen, "mobile menu is open?");
 
@@ -16,15 +16,10 @@ const Header = (props: Props) => {
   };
 
   const handleLogout = async (event: React.MouseEvent<HTMLElement>) => {
-    //console.log(event)
     setIsDisabled(true);
     event.preventDefault();
     console.log("logging out from Header");
-    // const API_URL = import.meta.env.VITE_API_URL;
-    // await axios.post(`${API_URL}/auth/logout`, { withCredentials: true });
     dispatch(logout());
-    //props.setIsLoggedIn(false);
-    //navigate("/auth/login");
     setIsDisabled(false);
   };
 
@@ -47,14 +42,14 @@ const Header = (props: Props) => {
               onClick={closeMobileMenu}
               className="
                 hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block"
+                rounded-lg p-4 block text-center"
             >
               Home
             </Link>
           </li>
           {
             // Don't show the register button while the user is logged in
-            !props.isLoggedIn && (
+            !isLoggedIn && (
               <li className="w-full">
                 <Link
                   to={"/auth/register"}
@@ -69,7 +64,7 @@ const Header = (props: Props) => {
             )
           }
           <li className="w-full">
-            {props.isLoggedIn ? (
+            {isLoggedIn ? (
               <button
                 type="button"
                 onClick={(e) => {
