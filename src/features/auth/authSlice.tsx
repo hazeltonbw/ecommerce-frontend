@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import axios from "axios";
 import { UserObject } from "../../routes/User";
+import api from "../../api/";
 
 interface authState {
   status: string;
@@ -18,21 +19,12 @@ const initialState: authState = {
   user: null,
   isLoggedIn: false,
 };
-const API_URL = import.meta.env.VITE_API_URL;
 
 export const login = createAsyncThunk<UserObject, UserObject>(
   "auth/login",
   async (values, { rejectWithValue, fulfillWithValue }) => {
-    const path = "/auth/login";
-    const url = API_URL + path;
     try {
-      const response = await axios.post(url, values, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        withCredentials: true,
-      });
+      const response = await api.post("/auth/login", values);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -45,30 +37,14 @@ export const login = createAsyncThunk<UserObject, UserObject>(
 );
 
 export const logout = createAsyncThunk<string>("auth/logout", async () => {
-  const path = "/auth/logout";
-  const url = API_URL + path;
-  const response = await axios.post(url, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-    withCredentials: true,
-  });
+  const response = await api.post("/auth/logout");
   return response.data;
 });
 
 export const register = createAsyncThunk<object>(
   "auth/register",
   async (values) => {
-    const path = "/auth/register";
-    const url = API_URL + path;
-    const response = await axios.post(url, values, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-      withCredentials: true,
-    });
+    const response = await api.post("/auth/register", values);
     return response.data;
   }
 );
