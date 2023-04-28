@@ -41,7 +41,7 @@ const Home = (props: Props) => {
         </Link>
       </div>
       <div className="flex flex-row-reverse flex-nowrap items-center w-3/4 md:w-1/4 lg:w-1/6 place-content-start">
-        <img src="products.jpg" alt="Products" className="rounded-2xl" />
+        <img src="products.webp" alt="Products" className="rounded-2xl" />
       </div>
     </div>
   );
