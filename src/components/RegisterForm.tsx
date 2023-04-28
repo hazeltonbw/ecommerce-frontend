@@ -1,11 +1,5 @@
 import { Formik, Form } from "formik";
-import {
-  ActionFunctionArgs,
-  redirect,
-  useActionData,
-  useSubmit,
-} from "react-router-dom";
-import axios from "axios";
+import { useActionData, useSubmit } from "react-router-dom";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 YupPassword(Yup);
@@ -13,32 +7,6 @@ import { TextInputLiveFeedback } from "./TextInputLiveFeedback";
 import FormSubmitButton from "./FormSubmitButton";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { register } from "../features/auth/authSlice";
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const baseURL: string = "http://localhost:4000";
-  const parameters = "/auth/register";
-  const url = baseURL + parameters;
-
-  try {
-    const formData = await request.formData();
-    const values = Object.fromEntries(formData);
-    await axios.post(url, values, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    });
-
-    // After successful registration, redirect to homepage.
-    return redirect("/");
-  } catch (err) {
-    return {
-      error: err,
-      message:
-        "There was a problem while creating your account. Please try again.",
-    };
-  }
-};
 
 const RegisterSchema = Yup.object().shape({
   fname: Yup.string()
@@ -77,7 +45,6 @@ const RegisterForm = () => {
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
           dispatch(register(values));
-          // submit(values, { method: "post" });
         }}
       >
         <Form className="flex flex-col gap-2 ">
