@@ -15,11 +15,6 @@ export const loader = async () => {
 };
 
 function Root() {
-  const user = useAppSelector(selectUser);
-
-  console.log(user, "USER INFO");
-  // console.log(data, "data!!!!!!!!");
-
   return (
     <div className="w-full min-h-full flex flex-col">
       <Header />

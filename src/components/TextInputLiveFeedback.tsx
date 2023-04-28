@@ -58,24 +58,6 @@ export const TextInputLiveFeedback = ({
             // autoComplete="new-password"
           />
         )}
-        {/* 
-        {props.type === "password" ? (
-          <button
-            id="toggle-password"
-            type="button"
-            aria-label="Show password as plain text. Warning: this will display your password on the screen."
-            className="border-none bg-none cursor-pointer p-0 absolute top-2.5 right-2 shadow-none"
-            onClick={() => {
-              setShowPassword(!showPassword);
-            }}
-          >
-            {showPassword ? (
-              <AiFillEyeInvisible size={24} />
-            ) : (
-              <AiFillEye size={24} />
-            )}
-          </button>
-        ) : null} */}
       </div>
       <div className="text-xs" id={`${props.id}-help`} tabIndex={-1}>
         {helpText}

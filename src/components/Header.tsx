@@ -1,15 +1,13 @@
-type Props = {};
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { logout, selectIsLoggedIn } from "../features/auth/authSlice";
 
-const Header = (props: Props) => {
+const Header = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
-  console.log(mobileMenuIsOpen, "mobile menu is open?");
 
   const closeMobileMenu = () => {
     setMobileMenuIsOpen(false);
@@ -18,7 +16,6 @@ const Header = (props: Props) => {
   const handleLogout = async (event: React.MouseEvent<HTMLElement>) => {
     setIsDisabled(true);
     event.preventDefault();
-    console.log("logging out from Header");
     dispatch(logout());
     setIsDisabled(false);
   };
@@ -26,13 +23,13 @@ const Header = (props: Props) => {
   return (
     <header className="p-8 bg-gray-200 dark:bg-gray-800 dark:text-white flex justify-between items-center">
       <h1>LOGO</h1>
-      <nav className={`flex justify-end px-4 py-8`}>
+      <nav className={`flex justify-end px-4`}>
         <ul
           className={
             mobileMenuIsOpen
               ? `flex flex-col bg-gray-800 text-black absolute 
               top-0 right-0 w-full h-full p-16 items-center justify-center 
-              gap-12 z-10 border-8 border-sky-700 text-white`
+              gap-12 z-10 border-8 border-sky-700 text-white rounded-xl`
               : `hidden md:flex`
           }
         >
@@ -108,27 +105,15 @@ const Header = (props: Props) => {
         <div
           className={
             mobileMenuIsOpen
-              ? "cursor-pointer absolute top-18 right-12 z-10 "
+              ? "cursor-pointer absolute top-8 right-12 z-10 "
               : "flex md:hidden cursor-pointer"
           }
           onClick={() => setMobileMenuIsOpen(!mobileMenuIsOpen)}
         >
           <div className="space-y-2">
-            <span
-              className={`block w-8 h-0.5 ${
-                mobileMenuIsOpen ? "bg-white " : "bg-white"
-              }`}
-            ></span>
-            <span
-              className={`block w-8 h-0.5 ${
-                mobileMenuIsOpen ? "bg-white " : "bg-white"
-              }`}
-            ></span>
-            <span
-              className={`block w-8 h-0.5 ${
-                mobileMenuIsOpen ? "bg-white " : "bg-white"
-              }`}
-            ></span>
+            <span className="block w-8 h-0.5 bg-white"></span>
+            <span className="block w-8 h-0.5 bg-white"></span>
+            <span className="block w-8 h-0.5 bg-white"></span>
           </div>
         </div>
       </nav>
