@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
   selectFirstName,
+  clearState,
 import imgUrl from "../assets/Shoppo.png";
 
 const Header = () => {
@@ -19,6 +20,7 @@ const Header = () => {
     setIsDisabled(true);
     event.preventDefault();
     dispatch(logout());
+    dispatch(clearState());
     setIsDisabled(false);
   };
 
