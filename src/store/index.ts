@@ -1,6 +1,12 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  combineReducers,
+  AnyAction,
+  Reducer,
+} from "@reduxjs/toolkit";
 // import slices
 import authReducer from "../features/auth/authSlice";
+import productReducer from "../features/products/productSlice";
 import {
   persistReducer,
   FLUSH,
@@ -17,14 +23,26 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authReducer,
+  product: productReducer,
 });
+
+const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
+  if (action.type === "auth/clearState") {
+    // this applies to all keys defined in persistConfig(s)
+    storage.removeItem("persist:root");
+
+    state = {} as RootState;
+  }
+  return appReducer(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  // https://redux-toolkit.js.org/api/getDefaultMiddleware
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
