@@ -27,12 +27,11 @@ const Home = (props: Props) => {
         <Link
           className="p-4 
         border-2 border-gray-800 rounded-xl 
-        flex items-center gap-2
-        bg-gray-800 text-white
+        flex items-center gap-2 justify-center
+        bg-gray-800 text-white 
         shadow-lg shadow-gray-800/25 
         hover:shadow-gray-800/50 hover:ease-in hover:-translate-y-1 hover:bg-sky-700 hover:border-sky-700
-        transition duration-150 ease-out 
-        max-w-fit
+        transition duration-150 ease-out w-full
         "
           to="/products"
         >
