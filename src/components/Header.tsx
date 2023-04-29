@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
+import {
+  logout,
   selectFirstName,
+  selectIsLoggedIn,
   clearState,
+} from "../features/auth/authSlice";
+
 import imgUrl from "../assets/Shoppo.png";
 
 const Header = () => {
@@ -53,6 +58,17 @@ const Header = () => {
               Home
             </Link>
           </li>
+          <li className="w-full">
+            <Link
+              to="/products"
+              onClick={closeMobileMenu}
+              className="
+              hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
+                rounded-lg p-4 block text-center"
+            >
+              Products
+            </Link>
+          </li>
           {
             // Don't show the register button while the user is logged in
             !isLoggedIn && (
@@ -97,17 +113,6 @@ const Header = () => {
                 Login
               </Link>
             )}
-          </li>
-          <li className="w-full">
-            <Link
-              to="/products"
-              onClick={closeMobileMenu}
-              className="
-              hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block text-center"
-            >
-              Products
-            </Link>
           </li>
         </ul>
 
