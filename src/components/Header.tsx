@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { logout, selectIsLoggedIn } from "../features/auth/authSlice";
+import imgUrl from "../assets/Shoppo.png";
 
 const Header = () => {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <header className="p-8 bg-gray-200 dark:bg-gray-800 dark:text-white flex justify-between items-center">
-      <h1>LOGO</h1>
+        <img src={imgUrl} alt="Shoppo Logo" className="w-16" />
       <nav className={`flex justify-end px-4`}>
         <ul
           className={
