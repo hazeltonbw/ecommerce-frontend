@@ -32,9 +32,9 @@ const PasswordField = (props: FieldHookConfig<string>) => {
         }}
       >
         {showPassword ? (
-          <AiFillEyeInvisible size={24} />
+          <AiFillEyeInvisible title="Hide password" size={24} />
         ) : (
-          <AiFillEye size={24} />
+          <AiFillEye title="Show password" size={24} />
         )}
       </button>
     </div>
