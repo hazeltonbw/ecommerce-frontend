@@ -10,7 +10,7 @@ const EmailInput = () => {
     <div
       className={`${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}
     >
-      <label htmlFor="email">Email</label>
+      <label htmlFor="email">Email address</label>
       <ErrorMessage
         component="div"
         className="text-red-700 text-sm"

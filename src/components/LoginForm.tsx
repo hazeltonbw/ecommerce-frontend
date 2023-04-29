@@ -40,7 +40,9 @@ import { useAppSelector, useAppDispatch } from "../hooks";
 // };
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required."),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email address is required."),
   password: Yup.string().required("Password is required."),
 });
 
@@ -50,7 +52,9 @@ const LoginForm = () => {
 
   return (
     <div className="bg-gray-200 text-black p-8 rounded-lg flex flex-col w-[22.5rem]">
-      <h1 className="text-2xl border border-b-gray-300">Login</h1>
+      <h1 className="text-2xl border border-b-gray-300">
+        Login to your account
+      </h1>
       <Formik
         initialValues={{
           email: "",
