@@ -56,6 +56,7 @@ export const authSlice = createSlice({
     builder
       .addCase(login.pending, (state) => {
         state.status = "pending";
+        state.message = ""; // clear any stale messages
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -69,10 +70,10 @@ export const authSlice = createSlice({
       })
       .addCase(logout.pending, (state) => {
         state.status = "pending";
+        state.message = ""; // clear any stale messages
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.message = action.payload;
         state.user = null;
         state.isLoggedIn = false;
       })
@@ -82,6 +83,7 @@ export const authSlice = createSlice({
       })
       .addCase(register.pending, (state) => {
         state.status = "pending";
+        state.message = ""; // clear any stale messages
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = "succeeded";
