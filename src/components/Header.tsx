@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
+  selectFirstName,
 import imgUrl from "../assets/Shoppo.png";
 
 const Header = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
 
   const closeMobileMenu = () => {
@@ -22,7 +24,12 @@ const Header = () => {
 
   return (
     <header className="p-8 bg-gray-200 dark:bg-gray-800 dark:text-white flex justify-between items-center">
+      <div className="flex ">
         <img src={imgUrl} alt="Shoppo Logo" className="w-16" />
+        {isLoggedIn && (
+          <h2 className="capitalize p-4 text-center">{`Hello ${fname}!`}</h2>
+        )}
+      </div>
       <nav className={`flex justify-end px-4`}>
         <ul
           className={
