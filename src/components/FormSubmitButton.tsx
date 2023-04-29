@@ -1,4 +1,3 @@
-import { BeatLoader } from "react-spinners";
 import LoadingSpinner from "./LoadingSpinner";
 
 type Props = { buttonText: string; status: string };
