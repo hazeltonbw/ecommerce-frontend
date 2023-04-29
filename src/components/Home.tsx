@@ -15,9 +15,9 @@ const Home = (props: Props) => {
         className="flex flex-col max-w-sm items-center gap-4 text-center 
       md:items-start md:text-left"
       >
-        <h1 className="text-4xl ">
+        <h1 className="text-4xl w-[15ch]">
           eCommerce
-          <span className="font-extrabold"> Shopping </span>
+          <span className="font-extrabold font-lobster"> Shopping </span>
           App
         </h1>
         <p className="text-xl font-bold ">

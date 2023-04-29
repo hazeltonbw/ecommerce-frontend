@@ -3,8 +3,8 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        yellowish: "#ffef00",
+      fontFamily: {
+        lobster: ["Lobster", "cursive"],
       },
     },
   },
