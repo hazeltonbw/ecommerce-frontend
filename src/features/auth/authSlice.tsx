@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import axios from "axios";
 import { UserObject } from "../../routes/User";
 import api from "../../api/";
 
@@ -8,7 +7,7 @@ interface authState {
   status: string;
   error: boolean;
   message: string;
-  user: object | null;
+  user: UserObject | null;
   isLoggedIn: boolean;
 }
 
