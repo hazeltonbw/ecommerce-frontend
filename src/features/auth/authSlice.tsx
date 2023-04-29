@@ -95,5 +95,6 @@ export const authSlice = createSlice({
 
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
+export const selectFirstName = (state: RootState) => state.auth.user?.fname;
 
 export default authSlice.reducer;
