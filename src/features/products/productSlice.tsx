@@ -8,14 +8,14 @@ interface productState {
   status: string;
   error: boolean;
   message: string;
-  products: Array<Product>;
+  products: Array<Product> | null;
 }
 
 const initialState: productState = {
   status: "idle",
   error: false,
   message: "",
-  products: [],
+  products: null,
 };
 
 export const getProducts = createAsyncThunk<Product[]>(
