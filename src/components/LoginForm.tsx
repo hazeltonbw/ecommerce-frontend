@@ -63,8 +63,11 @@ const LoginForm = () => {
         validationSchema={LoginSchema}
         onSubmit={async (values, { setSubmitting }) => {
           console.log("Attempting to login...");
-          dispatch(login(values));
-          // submit(values, { method: "post", action: "/auth/login" });
+          try {
+            dispatch(login(values));
+          } catch (err) {
+            console.error("error!     :", err);
+          }
           setSubmitting(false);
         }}
       >
