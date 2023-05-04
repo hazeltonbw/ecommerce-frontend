@@ -1,21 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { getCart, selectCart } from "../features/cart/cartSlice";
+import {
+  getCart,
+  selectCart,
+  selectTotalPrice,
+} from "../features/cart/cartSlice";
 import CartProduct from "../components/CartProduct";
 import type { CartProductT } from "../components/CartProduct";
 import ProductsLink from "../components/ProductsLink";
 import { selectIsLoggedIn } from "../features/auth/authSlice";
+import { getTotal } from "../features/cart/cartSlice";
 
 const Cart = () => {
   const cart = useAppSelector(selectCart);
   console.log(cart);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
+  const totalPrice = useAppSelector(selectTotalPrice);
   useEffect(() => {
+    dispatch(getTotal());
     if (isLoggedIn) {
       dispatch(getCart());
     }
   }, []);
+
+  useMemo(() => dispatch(getTotal()), [cart]);
+  // useEffect(() => {}, [cart]);
 
   if (cart === null || cart.length === 0) {
     return (
@@ -34,6 +44,7 @@ const Cart = () => {
       {cart.map((product: CartProductT) => (
         <CartProduct product={product} key={product.product_id} />
       ))}
+      <h1 className="text-xl">{`Total: $${totalPrice}`}</h1>
     </>
   );
 };

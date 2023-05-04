@@ -15,16 +15,12 @@ interface cartState {
   error: boolean;
   message: string;
   cart: Array<CartProductT> | null;
+  total: number;
 }
 
 type ProductIdQty = {
   product_id: number;
   qty: number;
-};
-
-type ProductIdCartId = {
-  product_id: number;
-  cart_id: number;
 };
 
 const initialState: cartState = {
@@ -38,6 +34,7 @@ const initialState: cartState = {
   error: false,
   message: "",
   cart: null,
+  total: 0,
 };
 
 export const getCart = createAsyncThunk<Array<CartProductT>>(
@@ -109,7 +106,15 @@ export const removeFromCart = createAsyncThunk<number, number>(
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    getTotal: (state) => {
+      if (state.cart) {
+        state.total = state.cart.reduce((acc, product: CartProductT) => {
+          return acc + product.qty * product.price;
+        }, 0);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCart.pending, (state) => {
@@ -135,6 +140,8 @@ export const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         state.addToCartStatus = "succeeded";
         state.addToCartError = false;
+        // If the cart is still null from initialState,
+        // lets make a new array with the new product added.
         if (state.cart === null) {
           state.cart = [action.payload];
           return;
@@ -142,7 +149,7 @@ export const cartSlice = createSlice({
         // Check if there's a match in the cart for the
         // product the user is trying to add.
         // Save the index to modify the product quantity in the cart later.
-        const idx = state.cart.findIndex(
+        const idx = state.cart?.findIndex(
           (obj) => obj.product_id === action.payload.product_id
         );
 
@@ -171,17 +178,17 @@ export const cartSlice = createSlice({
         state.updateCartError = false;
       })
       .addCase(updateCart.fulfilled, (state, action) => {
+        // action.payload is of type ProductIdQty
         state.updateCartStatus = "succeeded";
         state.updateCartError = false;
         const idx = state.cart?.findIndex(
           (obj) => obj.product_id === action.payload.product_id
         );
 
-        if (state.cart && idx !== undefined) {
+        // This if statement is probably unnecessary,
+        // but it doesn't hurt to have code that doesn't potentially crash
+        if (state.cart && idx !== undefined && idx !== -1) {
           state.cart[idx].qty = action.payload.qty;
-        } else {
-          state.updateCartStatus = "failed";
-          state.updateCartError = true;
         }
       })
       .addCase(removeFromCart.rejected, (state) => {
@@ -193,9 +200,10 @@ export const cartSlice = createSlice({
         state.removeFromCartError = false;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
+        // action.payload contains the product_id we are trying to delete
         state.removeFromCartStatus = "succeeded";
         state.removeFromCartError = false;
-        if (state.cart !== null) {
+        if (state.cart) {
           state.cart = state.cart.filter(
             (product) => product.product_id !== action.payload
           );
@@ -204,6 +212,9 @@ export const cartSlice = createSlice({
   },
 });
 
+export const { getTotal } = cartSlice.actions;
+
 export const selectCart = (state: RootState) => state.cart.cart;
+export const selectTotalPrice = (state: RootState) => state.cart.total;
 
 export default cartSlice.reducer;
