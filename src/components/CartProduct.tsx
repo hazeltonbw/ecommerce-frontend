@@ -5,7 +5,7 @@ import QuantityPicker from "./QuantityPicker";
 export type CartProductT = {
   product_id: number;
   title: string;
-  price: string;
+  price: number;
   description: string;
   category: string;
   qty: number;

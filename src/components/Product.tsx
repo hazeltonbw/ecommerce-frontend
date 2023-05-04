@@ -4,7 +4,7 @@ import QuantityPicker from "./QuantityPicker";
 
 export type Product = {
   title: string;
-  price: string;
+  price: number;
   description: string;
   img: string;
   product_id: number;
