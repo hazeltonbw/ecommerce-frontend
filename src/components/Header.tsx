@@ -130,15 +130,28 @@ const Header = () => {
         <div
           className={
             mobileMenuIsOpen
-              ? "cursor-pointer absolute top-8 right-12 z-10 "
+              ? "cursor-pointer absolute top-[3.3rem] right-12 z-10 "
               : "flex md:hidden cursor-pointer"
           }
           onClick={() => setMobileMenuIsOpen(!mobileMenuIsOpen)}
         >
           <div className="space-y-2">
-            <span className="block w-8 h-0.5 bg-white"></span>
-            <span className="block w-8 h-0.5 bg-white"></span>
-            <span className="block w-8 h-0.5 bg-white"></span>
+            <span
+              className={`block w-8 h-0.5 bg-white ${
+                mobileMenuIsOpen && "rotate-45 origin-top-left"
+              }`}
+            ></span>
+            <span
+              className={`block w-8 h-0.5 bg-white ${
+                mobileMenuIsOpen && "hidden"
+              }`}
+            ></span>
+            <span
+              className={`block w-8 h-0.5 bg-white ${
+                mobileMenuIsOpen &&
+                "-rotate-45 origin-bottom-left translate-y-[0.8rem]"
+              }`}
+            ></span>
           </div>
         </div>
       </nav>
