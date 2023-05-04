@@ -1,3 +1,6 @@
+import { addToCart } from "../features/cart/cartSlice";
+import { useAppDispatch } from "../hooks";
+import QuantityPicker from "./QuantityPicker";
 export type Product = {
   title: string;
   price: string;
@@ -11,6 +14,19 @@ type Props = {
   product: Product;
 };
 const Product = ({ product }: Props) => {
+  const dispatch = useAppDispatch();
+  const addProductToCart = async (qty: number) => {
+    try {
+      // TODO:
+      // Maybe consider using this dispatch vvvvvvvvvvvvv
+      // Put it in a try/catch block
+      // Save it in a variable, call unwrap()
+      // Check the data, if response is good then we can
+      // display an animation or text saying product was added to cart
+      //dispatch(addToCart({ product_id: product.product_id, qty }));
+      dispatch(addToCart({ ...product, qty }));
+    } catch (err) {}
+  };
   return (
     <div className="w-full sm:max-w-xs rounded overflow-hidden shadow-lg p-4">
       <div className="sm:h-[400px] flex items-center">
@@ -27,18 +43,7 @@ const Product = ({ product }: Props) => {
         <p className="capitalize">{product.category}</p>
         <p className="font-semibold">${product.price}</p>
       </div>
-      <div className="flex gap-2">
-        <input
-          type="number"
-          className="flex-none w-[7ch]"
-          placeholder="1"
-          min={1}
-          max={99}
-          defaultValue={1}
-        ></input>
-        {/* TODO: Make this button dispatch an action to add the product to the cart.*/}
-        <button className="w-full text-white basis-3/4">Add to Cart</button>
-      </div>
+      <QuantityPicker qty={1} inCart={false} buttonAction={addProductToCart} />
     </div>
   );
 };

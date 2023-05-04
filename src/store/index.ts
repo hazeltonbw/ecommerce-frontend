@@ -7,6 +7,7 @@ import {
 // import slices
 import authReducer from "../features/auth/authSlice";
 import productReducer from "../features/products/productSlice";
+import cartReducer from "../features/cart/cartSlice";
 import {
   persistReducer,
   FLUSH,
@@ -26,6 +27,7 @@ const persistConfig = {
 const appReducer = combineReducers({
   auth: authReducer,
   product: productReducer,
+  cart: cartReducer,
 });
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {

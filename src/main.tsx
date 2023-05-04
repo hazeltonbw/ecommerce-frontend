@@ -15,6 +15,7 @@ import { store } from "./store";
 import Products from "./routes/Products";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import Cart from "./routes/Cart";
 const persistor = persistStore(store);
 
 const router = createBrowserRouter([
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      /* CART ROUTE */
+      {
+        path: "/cart",
+        element: <Cart />,
       },
     ],
   },

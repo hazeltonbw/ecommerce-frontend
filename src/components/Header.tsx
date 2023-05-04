@@ -114,6 +114,17 @@ const Header = () => {
               </Link>
             )}
           </li>
+          <li className="w-full">
+            <Link
+              to="/cart"
+              onClick={closeMobileMenu}
+              className="
+              hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
+                rounded-lg p-4 block text-center"
+            >
+              Cart
+            </Link>
+          </li>
         </ul>
 
         <div
