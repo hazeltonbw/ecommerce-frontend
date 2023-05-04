@@ -1,14 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import axios from "axios";
-import { useAppSelector } from "../hooks";
-import { selectUser } from "../features/auth/authSlice";
+import api from "../api";
 
 export const loader = async () => {
-  const API_URL = import.meta.env.VITE_API_URL;
   try {
-    return axios.get(API_URL, { withCredentials: true });
+    return api.get("/");
   } catch (err) {
     return { error: err, message: "Error fetching main page." };
   }
