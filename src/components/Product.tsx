@@ -1,11 +1,12 @@
 import { addToCart } from "../features/cart/cartSlice";
 import { useAppDispatch } from "../hooks";
 import QuantityPicker from "./QuantityPicker";
+
 export type Product = {
   title: string;
   price: string;
   description: string;
-  imgURL: string;
+  img: string;
   product_id: number;
   category: string;
 };
@@ -28,10 +29,10 @@ const Product = ({ product }: Props) => {
     } catch (err) {}
   };
   return (
-    <div className="w-full sm:max-w-xs rounded overflow-hidden shadow-lg p-4">
+    <div className="w-full sm:max-w-xs rounded overflow-hidden shadow-lg">
       <div className="sm:h-[400px] flex items-center">
         <img
-          src={product.imgURL}
+          src={product.img}
           alt={product.title}
           className="sm:max-h-[400px] w-full"
         />
