@@ -14,8 +14,12 @@ const Products = () => {
     const fetchProducts = async () => {
       await dispatch(getProducts());
     };
-    if (products.length === 0) fetchProducts();
+    if (products === null || products.length === 0) fetchProducts();
   }, [products]);
+
+  if (!products) {
+    return <h1>Oh no! No products found.</h1>;
+  }
 
   return products.length > 0 ? (
     <div className="flex flex-wrap gap-4 p-4 justify-center">
