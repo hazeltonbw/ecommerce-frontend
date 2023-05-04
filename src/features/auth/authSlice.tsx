@@ -24,6 +24,7 @@ export const login = createAsyncThunk<UserObject, UserObject>(
   async (values, { rejectWithValue, fulfillWithValue }) => {
     try {
       const response = await api.post("/auth/login", values);
+      return fulfillWithValue(response.data);
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -31,8 +32,6 @@ export const login = createAsyncThunk<UserObject, UserObject>(
         return rejectWithValue(error.response.data);
       }
     }
-
-    return fulfillWithValue(values);
   }
 );
 
