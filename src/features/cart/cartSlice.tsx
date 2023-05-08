@@ -11,6 +11,8 @@ interface cartState {
   updateCartError: boolean;
   removeFromCartStatus: string;
   removeFromCartError: boolean;
+  syncCartToDatabaseStatus: string;
+  syncCartToDatabaseError: boolean;
   status: string;
   error: boolean;
   message: string;
@@ -29,6 +31,8 @@ const initialState: cartState = {
   updateCartError: false,
   removeFromCartStatus: "idle",
   removeFromCartError: false,
+  syncCartToDatabaseStatus: "idle",
+  syncCartToDatabaseError: false,
   status: "idle",
   error: false,
   message: "",
@@ -99,6 +103,30 @@ export const removeFromCart = createAsyncThunk<number, number>(
       }
     }
     return product_id;
+  }
+);
+
+export const syncCartToDatabase = createAsyncThunk<any, Array<CartProductT>>(
+  "/syncCarts",
+  async (cart: Array<CartProductT>) => {
+    if (cart == null || cart.length === 0) {
+      return [];
+    }
+
+    try {
+      cart.map(async (product: CartProductT) => {
+        await api.post("/cart/add", {
+          product_id: product.product_id,
+          qty: product.qty,
+        });
+      });
+
+      // Get the updated cart and update state in extraReducers
+      const response = await api.get<Array<CartProductT>>("/cart");
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
   }
 );
 
@@ -199,6 +227,19 @@ export const cartSlice = createSlice({
             (product) => product.product_id !== action.payload
           );
         }
+      })
+      .addCase(syncCartToDatabase.pending, (state) => {
+        state.syncCartToDatabaseStatus = "pending";
+        state.syncCartToDatabaseError = false;
+      })
+      .addCase(syncCartToDatabase.rejected, (state) => {
+        state.syncCartToDatabaseStatus = "failed";
+        state.syncCartToDatabaseError = true;
+      })
+      .addCase(syncCartToDatabase.fulfilled, (state, action) => {
+        state.syncCartToDatabaseStatus = "succeeded";
+        state.syncCartToDatabaseError = false;
+        state.cart = action.payload;
       });
   },
 });
