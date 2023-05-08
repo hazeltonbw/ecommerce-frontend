@@ -160,7 +160,7 @@ export const cartSlice = createSlice({
         state.addToCartError = false;
         // If the cart is still null from initialState,
         // lets make a new array with the new product added.
-        if (state.cart === null) {
+        if (state.cart == null) {
           state.cart = [action.payload];
           return;
         }
@@ -173,7 +173,7 @@ export const cartSlice = createSlice({
 
         // If findIndex didn't find a matching product,
         // it'll return -1. Add the product to the cart.
-        if (idx === undefined || idx === -1) {
+        if (idx == undefined || idx === -1) {
           state.cart.push(action.payload);
           return;
         }
@@ -205,7 +205,7 @@ export const cartSlice = createSlice({
 
         // This if statement is probably unnecessary,
         // but it doesn't hurt to have code that doesn't potentially crash
-        if (state.cart && idx !== undefined && idx !== -1) {
+        if (state.cart != null && idx != undefined && idx !== -1) {
           state.cart[idx].qty = action.payload.qty;
         }
       })
