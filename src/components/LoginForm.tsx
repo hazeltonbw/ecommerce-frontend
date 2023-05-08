@@ -5,6 +5,8 @@ import EmailInput from "./EmailInput";
 import FormSubmitButton from "./FormSubmitButton";
 import { login } from "../features/auth/authSlice";
 import { useAppSelector, useAppDispatch } from "../hooks";
+import { selectCart, syncCartToDatabase } from "../features/cart/cartSlice";
+import { CartProductT } from "./CartProduct";
 
 // export const loginAction = async ({ request }: ActionFunctionArgs) => {
 // console.log("attempting to login.... action");
@@ -49,6 +51,7 @@ const LoginSchema = Yup.object().shape({
 const LoginForm = () => {
   const dispatch = useAppDispatch();
   const { error, status, message } = useAppSelector((state) => state.auth);
+  const cart = useAppSelector(selectCart);
 
   return (
     <div className="bg-gray-200 text-black p-8 rounded-lg flex flex-col w-[22.5rem]">
@@ -64,7 +67,19 @@ const LoginForm = () => {
         onSubmit={async (values, { setSubmitting }) => {
           console.log("Attempting to login...");
           try {
-            dispatch(login(values));
+            const response = await dispatch(login(values));
+            if (response.payload.status === 200) {
+              console.log("Syncing carts...");
+              await dispatch(
+                syncCartToDatabase(
+                  cart.map((product: CartProductT) => {
+                    // Database only cares about product_id and qty, so make a
+                    // new array with only these values
+                    return { product_id: product.product_id, qty: product.qty };
+                  })
+                )
+              );
+            }
           } catch (err) {
             console.error("error!     :", err);
           }
