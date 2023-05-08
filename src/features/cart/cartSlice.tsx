@@ -15,7 +15,6 @@ interface cartState {
   error: boolean;
   message: string;
   cart: Array<CartProductT> | null;
-  total: number;
 }
 
 type ProductIdQty = {
@@ -106,15 +105,7 @@ export const removeFromCart = createAsyncThunk<number, number>(
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    getTotal: (state) => {
-      if (state.cart) {
-        state.total = state.cart.reduce((acc, product: CartProductT) => {
-          return acc + product.qty * product.price;
-        }, 0);
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getCart.pending, (state) => {
@@ -212,9 +203,13 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { getTotal } = cartSlice.actions;
-
 export const selectCart = (state: RootState) => state.cart.cart;
-export const selectTotalPrice = (state: RootState) => state.cart.total;
+export const selectTotalPrice = (state: RootState) => {
+  return state.cart.cart != null
+    ? state.cart.cart.reduce((acc: number, product: CartProductT) => {
+        return acc + product.qty * product.price;
+      }, 0)
+    : 0;
+};
 
 export default cartSlice.reducer;
