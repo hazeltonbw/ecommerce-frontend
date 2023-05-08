@@ -26,10 +26,7 @@ const Cart = () => {
     }
   }, []);
 
-  useMemo(() => dispatch(getTotal()), [cart]);
-  // useEffect(() => {}, [cart]);
-
-  if (cart === null || cart.length === 0) {
+  if (cart == null || cart?.length === 0) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center">
         <h1 className="text-2xl text-center leading-10">Your cart is empty!</h1>
