@@ -39,17 +39,19 @@ const initialState: cartState = {
   cart: null,
 };
 
-export const getCart = createAsyncThunk<
-  Array<CartProductT>,
-  Array<CartProductT>
->("/cart", async () => {
-  try {
-    const response: AxiosResponse = await api.get<Array<CartProductT>>("/cart");
-    return response.data;
-  } catch (err) {
-    console.error(err);
+export const getCart = createAsyncThunk<Array<CartProductT>>(
+  "/cart",
+  async () => {
+    try {
+      const response: AxiosResponse = await api.get<Array<CartProductT>>(
+        "/cart"
+      );
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 export const addToCart = createAsyncThunk<CartProductT, CartProductT>(
   "/cart/add",
