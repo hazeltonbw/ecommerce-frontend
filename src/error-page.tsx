@@ -2,7 +2,7 @@ import { isRouteErrorResponse, useRouteError, Link } from "react-router-dom";
 
 export default function ErrorPage() {
   const error = useRouteError();
-  console.log(error);
+  console.error(error);
 
   return (
     // display: flex;
