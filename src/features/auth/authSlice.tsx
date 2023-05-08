@@ -19,12 +19,12 @@ const initialState: authState = {
   isLoggedIn: false,
 };
 
-export const login = createAsyncThunk<UserObject, UserObject>(
+export const login = createAsyncThunk<any, UserObject>(
   "auth/login",
-  async (values, { rejectWithValue, fulfillWithValue }) => {
+  async (values: UserObject, { rejectWithValue, fulfillWithValue }) => {
     try {
       const response = await api.post("/auth/login", values);
-      return fulfillWithValue(response.data);
+      return fulfillWithValue({ status: response.status, data: response.data });
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -64,7 +64,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload;
+        state.user = action.payload.data;
         state.isLoggedIn = true;
       })
       .addCase(login.rejected, (state, action) => {
