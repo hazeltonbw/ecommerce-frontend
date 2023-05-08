@@ -1,6 +1,6 @@
 import { removeFromCart, updateCart } from "../features/cart/cartSlice";
 import { useAppDispatch } from "../hooks";
-import QuantityPicker from "./QuantityPicker";
+import { TbTrashOff } from "react-icons/tb";
 
 export type CartProductT = {
   product_id: number;
@@ -27,10 +27,12 @@ const CartProduct = ({ product }: Props) => {
     // Save it in a variable, call unwrap()
     // Check the data, if response is good then we can
     // display an animation or text saying product was updated in the cart
+
+    // console.log(qty);
     try {
       dispatch(updateCart({ product_id: product.product_id, qty }));
     } catch (err) {
-      console.log("ERROR IN updateProductInCart()", err);
+      console.error("ERROR IN updateProductInCart()", err);
     }
   };
 
@@ -40,28 +42,38 @@ const CartProduct = ({ product }: Props) => {
 
   return (
     <div className="flex flex-col items-center justify-center md:flex-row border-b-2 p-4">
-      <img
-        src={product.img}
-        alt={product.title}
-        className="max-h-[200px] max-w-[200px]"
-      />
+      <div className="min-w-[200px]">
+        <img src={product.img} alt={product.title} className="max-h-[200px] max-w-[200px] m-auto" />
+      </div>
       <div className="md:p-2">
-        <h1 className="text-xl font-semibold text-center">{product.title}</h1>
+        <h1 className="text-xl font-semibold text-left">{product.title}</h1>
         <p className="hidden md:block">{product.description}</p>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col items-center">
         <p className="font-semibold">Price: ${product.price}/ea</p>
-        <QuantityPicker
+        <div className="flex gap-1">
+          <select
+            name="quantity"
+            id="quantity"
+            className="bg-sky-900 text-white px-4 py-2 rounded-lg"
+            defaultValue={product.qty}
+            onChange={(e) => updateProductInCart(parseInt(e.target.value))}
+          >
+            {[...new Array(99)].map((_, index) => (
+              <option value={index + 1} key={index}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+          {/* <QuantityPicker
           qty={product.qty}
           inCart={true}
           buttonAction={updateProductInCart}
-        />
-        <button
-          className="w-full text-white"
-          onClick={(e) => removeProductFromCart(product.product_id)}
-        >
-          Remove from cart
-        </button>
+        /> */}
+          <button className="text-white" onClick={() => removeProductFromCart(product.product_id)}>
+            <TbTrashOff size={"1.3rem"} title="Remove from cart" />
+          </button>
+        </div>
       </div>
     </div>
   );
