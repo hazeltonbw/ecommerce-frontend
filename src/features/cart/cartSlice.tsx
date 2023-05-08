@@ -57,7 +57,10 @@ export const addToCart = createAsyncThunk<CartProductT, CartProductT>(
     if (getState().auth.isLoggedIn) {
       // Add product to cart in database if the user is logged in
       try {
-        const response: AxiosResponse = await api.post("/cart/add", product);
+        await api.post("/cart/add", {
+          product_id: product.product_id,
+          qty: product.qty,
+        });
       } catch (err) {
         console.error(err);
       }
