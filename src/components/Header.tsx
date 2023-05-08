@@ -8,6 +8,8 @@ import {
   clearState,
 } from "../features/auth/authSlice";
 
+import { AiOutlineShoppingCart } from "react-icons/ai";
+
 import imgUrl from "../assets/Shoppo.png";
 
 const Header = () => {
@@ -16,6 +18,7 @@ const Header = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
+  const itemsInCart = useAppSelector((state) => state.cart.cart != null ? state.cart.cart.length : 0);
 
   const closeMobileMenu = () => {
     setMobileMenuIsOpen(false);
@@ -114,7 +117,7 @@ const Header = () => {
               </Link>
             )}
           </li>
-          <li className="w-full">
+          <li className="w-full ">
             <Link
               to="/cart"
               onClick={closeMobileMenu}
@@ -122,7 +125,16 @@ const Header = () => {
               hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
                 rounded-lg p-4 block text-center"
             >
-              Cart
+              <div className="relative">
+                <span
+                  className="block absolute -inset-y-5 left-3 text-sky-400"
+                  aria-hidden="true"
+                >
+                  {itemsInCart}
+                </span>
+
+                <AiOutlineShoppingCart size={"1.5rem"} title="View cart" />
+              </div>
             </Link>
           </li>
         </ul>
