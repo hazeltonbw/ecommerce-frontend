@@ -3,6 +3,7 @@ import { getProducts, selectProducts } from "../features/products/productSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppDispatch } from "../store";
 import Product from "../components/Product";
+import type { Product as ProductType } from "../components/Product";
 
 const Products = () => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -22,9 +23,9 @@ const Products = () => {
   }
 
   return products.length > 0 ? (
-    <div className="flex flex-wrap gap-4 p-4 justify-center">
+    <div className="flex flex-wrap gap-y-12 gap-x-12 p-4 justify-center">
       {products.length > 0 &&
-        products.map((product) => (
+        products.map((product: ProductType) => (
           <Product key={product.product_id} product={product} />
         ))}
     </div>
