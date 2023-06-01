@@ -7,57 +7,21 @@ import { login } from "../features/auth/authSlice";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { selectCart, syncCartToDatabase } from "../features/cart/cartSlice";
 import { CartProductT } from "./CartProduct";
-
-// export const loginAction = async ({ request }: ActionFunctionArgs) => {
-// console.log("attempting to login.... action");
-// const baseURL = "http://localhost:4000";
-// const parameters = "/auth/login";
-// const url = baseURL + parameters;
-
-// try {
-//   const formData = await request.formData();
-
-//   const values = Object.fromEntries(formData);
-//   const dispatch = useAppDispatch();
-//   dispatch(login(values));
-// const { data } = await axios.post(url, values, {
-//   headers: {
-//     Accept: "application/json",
-//     "Content-Type": "application/json;charset=UTF-8",
-//   },
-//   withCredentials: true,
-// });
-
-//console.log(user.data, "response from login action");
-// After successful login, redirect to homepage.
-//     return {};
-//     //return redirect(`/users/${data.user_id}`);
-//   } catch (err) {
-//     console.error(err);
-//     return {
-//       error: err,
-//       message: err.response?.data?.message,
-//     };
-//   }
-// };
+import FormErrorText from "./FormErrorText";
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email address is required."),
+  email: Yup.string().email("Invalid email").required("Email address is required."),
   password: Yup.string().required("Password is required."),
 });
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const { error, status, message } = useAppSelector((state) => state.auth);
+  const { loginError, status, message } = useAppSelector((state) => state.auth);
   const cart = useAppSelector(selectCart);
 
   return (
-    <div className="bg-gray-200 text-black p-8 rounded-lg flex flex-col w-[22.5rem]">
-      <h1 className="text-2xl border border-b-gray-300">
-        Login to your account
-      </h1>
+    <div className="flex w-[22.5rem] flex-col rounded-lg bg-gray-200 p-8 text-black">
+      <h1 className="border border-b-gray-300 text-2xl">Login to your account</h1>
       <Formik
         initialValues={{
           email: "",
@@ -70,15 +34,21 @@ const LoginForm = () => {
             const response = await dispatch(login(values));
             if (response.payload.status === 200) {
               console.log("Syncing carts...");
-              await dispatch(
-                syncCartToDatabase(
-                  cart.map((product: CartProductT) => {
-                    // Database only cares about product_id and qty, so make a
-                    // new array with only these values
-                    return { product_id: product.product_id, qty: product.qty };
-                  })
-                )
-              );
+
+              let loggedOutCart;
+              if (cart != null) {
+                loggedOutCart = cart.map((product: CartProductT) => {
+                  // Database only cares about product_id and qty,
+                  // so make a new array with only these values
+                  // also include deleted and modified to check
+                  // if user deleted or modified cart while logged off
+                  return {
+                    product_id: product.product_id,
+                    qty: product.qty,
+                  };
+                });
+              }
+              await dispatch(syncCartToDatabase(loggedOutCart));
             }
           } catch (err) {
             console.error("error!     :", err);
@@ -89,7 +59,7 @@ const LoginForm = () => {
         <Form className="flex flex-col gap-2 ">
           <EmailInput />
           <PasswordInput />
-          {error ? <div className="text-red-700">{message}</div> : null}
+          <FormErrorText error={loginError} message={message} />
           <FormSubmitButton buttonText="Login" status={status} />
         </Form>
       </Formik>
