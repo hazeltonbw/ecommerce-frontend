@@ -1,19 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { UserObject } from "../../routes/User";
+import type { UserObject } from "../../routes/User";
+import { AxiosResponse, AxiosError } from "axios";
 import api from "../../api/";
 
+export type Unauthenticated = {
+  success: boolean;
+  redirectUrl: string;
+  error: string;
+};
+
 interface authState {
-  status: string;
-  error: boolean;
-  message: string;
+  loginStatus: string;
+  logoutStatus: string;
+  registerStatus: string;
+  loginError: boolean;
+  logoutError: boolean;
+  registerError: boolean;
+  message: string | unknown;
   user: UserObject | null;
   isLoggedIn: boolean;
 }
 
 const initialState: authState = {
-  status: "idle",
-  error: false,
+  loginStatus: "idle",
+  logoutStatus: "idle",
+  registerStatus: "idle",
+  loginError: false,
+  logoutError: false,
+  registerError: false,
   message: "",
   user: null,
   isLoggedIn: false,
@@ -25,7 +40,7 @@ export const login = createAsyncThunk<any, UserObject>(
     try {
       const response = await api.post("/auth/login", values);
       return fulfillWithValue({ status: response.status, data: response.data });
-    } catch (error) {
+    } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -35,16 +50,41 @@ export const login = createAsyncThunk<any, UserObject>(
   }
 );
 
-export const logout = createAsyncThunk<string>("auth/logout", async () => {
-  const response = await api.post("/auth/logout");
-  return response.data;
-});
+export const logout = createAsyncThunk<string>(
+  "auth/logout",
+  async (_, { rejectWithValue, fulfillWithValue, dispatch }) => {
+    try {
+      const response = await api.post("/auth/logout");
+      // clear the logged in state
+      dispatch(clearState());
+      return fulfillWithValue(response.data);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        return rejectWithValue(err.response?.data);
+        // rejectWithValue(err);
+      }
+    }
+  }
+);
 
-export const register = createAsyncThunk<object>(
+export const register = createAsyncThunk<UserObject, object>(
   "auth/register",
-  async (values) => {
-    const response = await api.post("/auth/register", values);
-    return response.data;
+  async (values, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response: AxiosResponse = await api.post("/auth/register", values);
+      console.log(response.data);
+      return fulfillWithValue(response.data);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        return rejectWithValue(err.response?.data);
+        // console.log("Rejecting with value", err);
+        // return rejectWithValue(err);
+      }
+    }
   }
 );
 
@@ -59,38 +99,41 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
-        state.status = "pending";
+        state.loginStatus = "pending";
         state.message = ""; // clear any stale messages
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.loginStatus = "succeeded";
         state.user = action.payload.data;
         state.isLoggedIn = true;
       })
       .addCase(login.rejected, (state, action) => {
-        state.status = "failed";
+        state.loginStatus = "failed";
         state.message = action.payload;
-        state.error = true;
+        state.loginError = true;
       })
       .addCase(logout.pending, (state) => {
-        state.status = "pending";
+        state.logoutStatus = "pending";
         state.message = ""; // clear any stale messages
       })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.user = null;
-        state.isLoggedIn = false;
+      .addCase(logout.rejected, (state, action) => {
+        state.logoutStatus = "failed";
+        state.message = "Failed to logout. Please try again"; // clear any stale messages
+        state.message = action.payload;
       })
-      .addCase(register.rejected, (state) => {
-        state.status = "failed";
-        state.error = true;
+      // this resets everything back to initialState
+      .addCase(logout.fulfilled, () => initialState)
+      .addCase(register.rejected, (state, action) => {
+        state.registerStatus = "failed";
+        state.registerError = true;
+        state.message = action.payload;
       })
       .addCase(register.pending, (state) => {
-        state.status = "pending";
+        state.registerStatus = "pending";
         state.message = ""; // clear any stale messages
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.registerStatus = "succeeded";
         state.user = action.payload;
         state.isLoggedIn = true;
       });
