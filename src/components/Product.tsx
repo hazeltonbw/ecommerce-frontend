@@ -25,20 +25,16 @@ const Product = ({ product }: Props) => {
       // Check the data, if response is good then we can
       // display an animation or text saying product was added to cart
       //dispatch(addToCart({ product_id: product.product_id, qty }));
-      dispatch(addToCart({ ...product, qty }));
+      dispatch(addToCart({ ...product, qty: qty }));
     } catch (err) {}
   };
   return (
-    <div className="w-full sm:max-w-xs rounded overflow-hidden shadow-lg">
-      <div className="sm:h-[400px] flex items-center">
-        <img
-          src={product.img}
-          alt={product.title}
-          className="sm:max-h-[400px] w-full"
-        />
+    <div className="w-full overflow-hidden rounded shadow-lg sm:max-w-xs">
+      <div className="flex items-center sm:h-[400px]">
+        <img src={product.img} alt={product.title} className="w-full sm:max-h-[400px]" />
       </div>
       <div className="px-6 py-4">
-        <h1 className="capitalize font-bold overflow-ellipsis whitespace-nowrap overflow-hidden">
+        <h1 className="overflow-hidden overflow-ellipsis whitespace-nowrap font-bold capitalize">
           {product.title}
         </h1>
         <p className="capitalize">{product.category}</p>

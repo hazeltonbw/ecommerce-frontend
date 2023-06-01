@@ -7,26 +7,21 @@ const PasswordField = (props: FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
   const [didFocus, setDidFocus] = useState(false);
   const handleFocus = () => setDidFocus(true);
-  const showFeedback =
-    (didFocus && field.value?.trim().length > 2) || meta.touched;
+  const showFeedback = (didFocus && field.value?.trim().length > 2) || meta.touched;
   return (
-    <div
-      className={`relative ${
-        showFeedback ? (meta.error ? "invalid" : "valid") : ""
-      }`}
-    >
+    <div className={`relative ${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}>
       <Field
         {...props}
         {...field}
         type={showPassword ? "text" : "password"}
-        className={`focus:outline-none focus:ring-2 focus:ring-sky-500 invalid:text-red-500 pr-10 w-full`}
+        className={`w-full pr-10 invalid:text-red-500 focus:outline-none focus:ring-2 focus:ring-sky-500`}
         onFocus={handleFocus}
       />
       <button
         id="toggle-password"
         type="button"
         aria-label="Show password as plain text. Warning: this will display your password on the screen."
-        className="border-none bg-none cursor-pointer p-0 absolute top-2 right-2 shadow-none"
+        className="absolute top-2 right-2 cursor-pointer border-none bg-none p-0 shadow-none"
         onClick={() => {
           setShowPassword(!showPassword);
         }}

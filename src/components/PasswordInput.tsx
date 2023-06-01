@@ -4,11 +4,7 @@ const PasswordInput = () => {
   return (
     <div>
       <label htmlFor="password">Password</label>
-      <ErrorMessage
-        component="div"
-        className="text-red-700 text-sm"
-        name="password"
-      />
+      <ErrorMessage component="div" className="text-sm text-red-700" name="password" />
       <PasswordField
         type="password"
         name="password"

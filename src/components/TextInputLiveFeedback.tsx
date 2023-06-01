@@ -16,30 +16,23 @@ export const TextInputLiveFeedback = ({
   // - or, the has been visited (touched === true)
   const [didFocus, setDidFocus] = useState(false);
   const handleFocus = () => setDidFocus(true);
-  const showFeedback =
-    (didFocus && field.value?.trim().length > 2) || meta.touched;
+  const showFeedback = (didFocus && field.value?.trim().length > 2) || meta.touched;
 
   return (
     <div
-      className={`form-control relative ${
-        showFeedback ? (meta.error ? "invalid" : "valid") : ""
-      }`}
+      className={`form-control relative ${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}
     >
       <div className="flex flex-col">
         <div
           className={`${
             /* When an error occurs, div should flow naturally to allow text to pass down to the next line
                When there's no error, the green checkmark should be at the end of the container.*/
-            meta.error ? "" : "flex items-center place-content-between "
+            meta.error ? "" : "flex place-content-between items-center "
           }`}
         >
           <label htmlFor={props.id}>{label}</label>{" "}
           {showFeedback ? (
-            <div
-              id={`${props.id}-feedback`}
-              aria-live="polite"
-              className="feedback text-sm"
-            >
+            <div id={`${props.id}-feedback`} aria-live="polite" className="feedback text-sm">
               {meta.error ? meta.error : <FcCheckmark size={16} />}
             </div>
           ) : null}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type Props = {
   qty: number;
@@ -17,36 +17,24 @@ const QuantityPicker = (props: Props) => {
 
   const updateQty = (num: number) => {
     // clamp number between MIN and MAX
-    const clamp = (num: number, min: number, max: number) =>
-      Math.min(Math.max(num, min), max);
+    const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
 
     const MIN: number = 1,
       MAX: number = 99;
     setQty(clamp(qty + num, MIN, MAX));
   };
   return (
-    <div className="flex-col w-full justify-center items-center ">
+    <div className="w-full flex-col items-center justify-center ">
       <div className="flex items-center justify-center p-1">
-        <button
-          id="decrement"
-          className="text-white px-6"
-          onClick={() => updateQty(-1)}
-        >
+        <button id="decrement" className="px-6 text-white" onClick={() => updateQty(-1)}>
           -
         </button>
-        <span className="text-lg min-w-[3ch] text-center">{qty}</span>
-        <button
-          id="increment"
-          className="text-white px-6"
-          onClick={() => updateQty(1)}
-        >
+        <span className="min-w-[3ch] text-center text-lg">{qty}</span>
+        <button id="increment" className="px-6 text-white" onClick={() => updateQty(1)}>
           +
         </button>
       </div>
-      <button
-        className="w-full text-white"
-        onClick={(e) => props.buttonAction(qty)}
-      >
+      <button className="w-full text-white" onClick={() => props.buttonAction(qty)}>
         {props.inCart ? "Update cart" : "Add to Cart"}
       </button>
     </div>
