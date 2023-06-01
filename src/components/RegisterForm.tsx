@@ -1,12 +1,14 @@
 import { Formik, Form } from "formik";
-import { useActionData, useSubmit } from "react-router-dom";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 YupPassword(Yup);
 import { TextInputLiveFeedback } from "./TextInputLiveFeedback";
 import FormSubmitButton from "./FormSubmitButton";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { register } from "../features/auth/authSlice";
+import { login, register } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import FormErrorText from "./FormErrorText";
+import { UserObject } from "../routes/User";
 
 const RegisterSchema = Yup.object().shape({
   fname: Yup.string()
@@ -26,14 +28,12 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const RegisterForm = () => {
-  const submit = useSubmit();
   const dispatch = useAppDispatch();
-  const actionData = useActionData();
-  //const { error, message } = actionData || {};
-  const { error, message, status } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { registerError, message, status } = useAppSelector((state) => state.auth);
   return (
-    <div className="bg-gray-200 text-black p-8 rounded-lg w-[22.5rem] ">
-      <h1 className="text-2xl border border-b-gray-300">Register</h1>
+    <div className="w-[22.5rem] rounded-lg bg-gray-200 p-8 text-black ">
+      <h1 className="border border-b-gray-300 text-2xl">Register</h1>
       <Formik
         initialValues={{
           email: "",
@@ -43,17 +43,32 @@ const RegisterForm = () => {
           isadmin: false,
         }}
         validationSchema={RegisterSchema}
-        onSubmit={async (values) => {
-          dispatch(register(values));
+        onSubmit={async (values: UserObject) => {
+          try {
+            const response = await dispatch(register(values));
+            if (response.meta?.requestStatus === "fulfilled") {
+              // Login route doesn't care about these properties
+              // ... so delete them
+              delete values.fname;
+              delete values.lname;
+              delete values.isadmin;
+              await dispatch(login(values));
+              navigate("/");
+            }
+            console.log(response);
+          } catch (err) {
+            console.error(err);
+          }
         }}
       >
-        <Form className="flex flex-col gap-2 ">
+        <Form className="flex flex-col gap-2">
           <TextInputLiveFeedback
             label="Email"
             id="email"
             name="email"
             helpText=""
             type="email"
+            autoComplete="username"
           />
           <TextInputLiveFeedback
             label="Password"
@@ -86,7 +101,7 @@ const RegisterForm = () => {
             type="text"
           />
           <FormSubmitButton buttonText="Register" status={status} />
-          {message ? message : null}
+          <FormErrorText error={registerError} message={message} />
         </Form>
       </Formik>
     </div>
