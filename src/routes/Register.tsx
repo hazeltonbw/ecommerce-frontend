@@ -1,10 +1,8 @@
 import RegisterForm from "../components/RegisterForm";
 
-type Props = {};
-
-const Register = (props: Props) => {
+const Register = () => {
   return (
-    <div className="flex flex-col flex-1 justify-center items-center p-8 bg-cyan-600">
+    <div className="flex flex-1 flex-col items-center justify-center bg-cyan-600 p-8">
       <RegisterForm />
     </div>
   );
