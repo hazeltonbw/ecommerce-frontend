@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 
 export interface UserObject {
   user_id?: Number;
@@ -9,10 +9,9 @@ export interface UserObject {
   password?: string;
 }
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   // Vite has a different way to access environment variables
   // https://vitejs.dev/guide/env-and-mode.html
-  // console.log(import.meta.env.VITE_API_URL);
   const API_URL = import.meta.env.VITE_API_URL;
   try {
     return fetch(`${API_URL}/users/${params.user_id}`);
@@ -24,8 +23,7 @@ export const loader = async ({ params }) => {
   }
 };
 
-interface Props {}
-function User(props: Props) {
+function User() {
   let user = useLoaderData() as UserObject;
 
   if (!user)
