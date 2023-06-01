@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import {
-  logout,
-  selectFirstName,
-  selectIsLoggedIn,
-  clearState,
-} from "../features/auth/authSlice";
+import { logout, selectFirstName, selectIsLoggedIn, clearState } from "../features/auth/authSlice";
 
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
@@ -18,7 +13,9 @@ const Header = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
-  const itemsInCart = useAppSelector((state) => state.cart.cart != null ? state.cart.cart.length : 0);
+  const itemsInCart = useAppSelector((state) =>
+    state.cart.cart != null ? state.cart.cart.length : 0
+  );
 
   const closeMobileMenu = () => {
     setMobileMenuIsOpen(false);
@@ -33,20 +30,18 @@ const Header = () => {
   };
 
   return (
-    <header className="p-8 bg-gray-200 dark:bg-gray-800 dark:text-white flex justify-between items-center">
+    <header className="flex items-center justify-between bg-gray-200 p-8 dark:bg-gray-800 dark:text-white">
       <div className="flex ">
         <img src={imgUrl} alt="Shoppo Logo" className="w-16" />
-        {isLoggedIn && (
-          <h2 className="capitalize p-4 text-center">{`Hello ${fname}!`}</h2>
-        )}
+        {isLoggedIn && <h2 className="p-4 text-center capitalize">{`Hello ${fname}!`}</h2>}
       </div>
       <nav className={`flex justify-end px-4`}>
         <ul
           className={
             mobileMenuIsOpen
-              ? `flex flex-col bg-gray-800 text-black absolute 
-              top-0 right-0 w-full h-full p-16 items-center justify-center 
-              gap-12 z-10 border-8 border-sky-700 text-white rounded-xl`
+              ? `absolute top-0 right-0 z-10 flex 
+              h-full w-full flex-col items-center justify-center gap-12 rounded-xl 
+              border-8 border-sky-700 bg-gray-800 p-16 text-white`
               : `hidden md:flex`
           }
         >
@@ -55,8 +50,8 @@ const Header = () => {
               to={"/"}
               onClick={closeMobileMenu}
               className="
-                hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block text-center"
+                block rounded-lg p-4 text-center
+                hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
             >
               Home
             </Link>
@@ -66,12 +61,25 @@ const Header = () => {
               to="/products"
               onClick={closeMobileMenu}
               className="
-              hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block text-center"
+              block rounded-lg p-4 text-center
+                hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
             >
               Products
             </Link>
           </li>
+          {isLoggedIn && (
+            <li className="w-full ">
+              <Link
+                to="/orders"
+                onClick={closeMobileMenu}
+                className="
+              flex items-center justify-center
+                rounded-lg p-4 text-center hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
+              >
+                Orders
+              </Link>
+            </li>
+          )}
           {
             // Don't show the register button while the user is logged in
             !isLoggedIn && (
@@ -80,8 +88,8 @@ const Header = () => {
                   to={"/auth/register"}
                   onClick={closeMobileMenu}
                   className="
-                hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block text-center"
+                block rounded-lg p-4 text-center
+                hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
                 >
                   Register
                 </Link>
@@ -98,8 +106,8 @@ const Header = () => {
                 }}
                 aria-disabled={isDisabled}
                 className="
-                hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                shadow-none p-4 text-inherit w-full block text-center"
+                block w-full p-4 text-center
+                text-inherit shadow-none hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
               >
                 Logout
               </button>
@@ -108,9 +116,9 @@ const Header = () => {
                 to={"/auth/login"}
                 onClick={closeMobileMenu}
                 className="
-        hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-        rounded-lg
-        p-4 block text-center
+        block rounded-lg p-4 text-center
+        hover:border-sky-700
+        hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50
             "
               >
                 Login
@@ -122,18 +130,18 @@ const Header = () => {
               to="/cart"
               onClick={closeMobileMenu}
               className="
-              hover:shadow-gray-800/50 hover:bg-sky-700 hover:border-sky-700 hover:text-white
-                rounded-lg p-4 block text-center"
+              flex items-center justify-center
+                rounded-lg p-4 text-center hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
             >
               <div className="relative">
                 <span
-                  className="block absolute -inset-y-5 left-3 text-sky-400"
+                  className="absolute -top-[1.4rem] block w-[3ch] rounded-full border-2 border-sky-400 text-sky-400"
                   aria-hidden="true"
                 >
                   {itemsInCart}
                 </span>
 
-                <AiOutlineShoppingCart size={"1.5rem"} title="View cart" />
+                <AiOutlineShoppingCart size={24} title="View cart" />
               </div>
             </Link>
           </li>
@@ -142,26 +150,21 @@ const Header = () => {
         <div
           className={
             mobileMenuIsOpen
-              ? "cursor-pointer absolute top-[3.3rem] right-12 z-10 "
-              : "flex md:hidden cursor-pointer"
+              ? "absolute top-[3.3rem] right-12 z-10 cursor-pointer "
+              : "flex cursor-pointer md:hidden"
           }
           onClick={() => setMobileMenuIsOpen(!mobileMenuIsOpen)}
         >
           <div className="space-y-2">
             <span
-              className={`block w-8 h-0.5 bg-white ${
-                mobileMenuIsOpen && "rotate-45 origin-top-left"
+              className={`block h-0.5 w-8 bg-white ${
+                mobileMenuIsOpen && "origin-top-left rotate-45"
               }`}
             ></span>
+            <span className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "hidden"}`}></span>
             <span
-              className={`block w-8 h-0.5 bg-white ${
-                mobileMenuIsOpen && "hidden"
-              }`}
-            ></span>
-            <span
-              className={`block w-8 h-0.5 bg-white ${
-                mobileMenuIsOpen &&
-                "-rotate-45 origin-bottom-left translate-y-[0.8rem]"
+              className={`block h-0.5 w-8 bg-white ${
+                mobileMenuIsOpen && "origin-bottom-left translate-y-[0.8rem] -rotate-45"
               }`}
             ></span>
           </div>
