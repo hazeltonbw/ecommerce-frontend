@@ -3,6 +3,7 @@ import api from "../../api";
 import { RootState } from "../../store";
 import { AxiosResponse } from "axios";
 import type { CartProductT } from "../../components/CartProduct";
+import type { Unauthenticated } from "../auth/authSlice";
 
 interface cartState {
   addToCartStatus: string;
@@ -39,14 +40,22 @@ const initialState: cartState = {
   cart: null,
 };
 
-export const getCart = createAsyncThunk<Array<CartProductT>>(
+export const getCart = createAsyncThunk<Array<CartProductT> & Unauthenticated>(
   "/cart",
-  async () => {
+  async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await api.get<Array<CartProductT>>(
-        "/cart"
-      );
-      return response.data;
+      const response: AxiosResponse = await api.get<Array<CartProductT>>("/cart");
+      //       success: false,
+      // redirectUrl: "/auth/login",
+      // message: "Please login again to view your saved cart."
+
+      if (response.data?.error === "Unauthenticated") {
+        return rejectWithValue({ message: "Unauthenticated" });
+      }
+      if (response.data?.message != null) {
+        return rejectWithValue({ message: response.data.message });
+      }
+      return fulfillWithValue(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -59,10 +68,7 @@ export const addToCart = createAsyncThunk<CartProductT, CartProductT>(
     if (getState().auth.isLoggedIn) {
       // Add product to cart in database if the user is logged in
       try {
-        await api.post("/cart/add", {
-          product_id: product.product_id,
-          qty: product.qty,
-        });
+        await api.post("/cart/add", { product_id: product.product_id, qty: product.qty });
       } catch (err) {
         console.error(err);
       }
@@ -80,7 +86,7 @@ export const updateCart = createAsyncThunk<ProductIdQty, ProductIdQty>(
   async (values: ProductIdQty, { getState }: RootState) => {
     if (getState().auth.isLoggedIn) {
       try {
-        const response: AxiosResponse = await api.put("/cart", values);
+        await api.put("/cart", values);
       } catch (err) {
         console.error(err);
       }
@@ -97,7 +103,7 @@ export const removeFromCart = createAsyncThunk<number, number>(
         // Unlike axios.post() and axios.put(), the 2nd param to axios.delete()
         // is the Axios options, not the request body. To send a request body
         // with a DELETE request, you should use the data option.
-        const response: AxiosResponse = await api.delete("/cart", {
+        await api.delete("/cart", {
           data: {
             product_id: product_id,
           },
@@ -112,18 +118,60 @@ export const removeFromCart = createAsyncThunk<number, number>(
 
 export const syncCartToDatabase = createAsyncThunk<any, Array<CartProductT>>(
   "/syncCarts",
-  async (cart: Array<CartProductT>) => {
-    if (cart == null || cart.length === 0) {
-      return [];
-    }
-
+  async (cart: Array<CartProductT> | null, { dispatch }: RootState) => {
     try {
-      cart.map(async (product: CartProductT) => {
-        await api.post("/cart/add", {
-          product_id: product.product_id,
-          qty: product.qty,
+      // const productsToRemove = getState().cart.productsToRemove;
+      // console.info(
+      //   `User deleted product(s) while logged off.. check list of products`,
+      //   productsToRemove
+      // );
+      // if (productsToRemove?.length > 0) {
+      //   productsToRemove.forEach(async (product_id: number) => {
+      //     dispatch(removeFromCart(product_id));
+      //     // await api.delete("/cart", {
+      //     //   data: {
+      //     //     product_id: product_id,
+      //     //   },
+      //     // });
+      //   });
+      // }
+
+      if (cart != null) {
+        cart.map(async (product: CartProductT) => {
+          // Product was deleted while logged off..
+          // delete from database
+          // if (product.deleted) {
+          //   console.log(
+          //     `User deleted product while logged off.. deleting product:${product.product_id}`
+          //   );
+          //   await api.delete("/cart", {
+          //     data: {
+          //       product_id: product.product_id,
+          //     },
+          //   });
+          // }
+
+          // Product was modified while logged off..
+          // update the product in the database
+          // if (product.modified) {
+          //   product.modified = false;
+          //   dispatch(updateCart({ product_id: product.product_id, qty: product.qty }));
+          //   // await api.put("/cart", {
+          //   //   product_id: product.product_id,
+          //   //   qty: product.qty,
+          //   // });
+          // }
+
+          // New product, add it to their cart in the database
+          // else {
+          await dispatch(addToCart(product));
+          // await api.post("/cart/add", {
+          //   product_id: product.product_id,
+          //   qty: product.qty,
+          // });
+          // }
         });
-      });
+      }
 
       // Get the updated cart and update state in extraReducers
       const response = await api.get<Array<CartProductT>>("/cart");
@@ -137,21 +185,20 @@ export const syncCartToDatabase = createAsyncThunk<any, Array<CartProductT>>(
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCart: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCart.pending, (state) => {
         state.status = "pending";
         state.error = false;
       })
-      .addCase(
-        getCart.fulfilled,
-        (state, action: PayloadAction<Array<CartProductT>>) => {
-          state.status = "succeeded";
-          state.error = false;
-          state.cart = action.payload;
-        }
-      )
+      .addCase(getCart.fulfilled, (state, action: PayloadAction<Array<CartProductT>>) => {
+        state.status = "succeeded";
+        state.error = false;
+        state.cart = action.payload;
+      })
       .addCase(getCart.rejected, (state) => {
         state.status = "failed";
         state.error = true;
@@ -172,9 +219,7 @@ export const cartSlice = createSlice({
         // Check if there's a match in the cart for the
         // product the user is trying to add.
         // Save the index to modify the product quantity in the cart later.
-        const idx = state.cart?.findIndex(
-          (obj) => obj.product_id === action.payload.product_id
-        );
+        const idx = state.cart?.findIndex((obj) => obj.product_id === action.payload.product_id);
 
         // If findIndex didn't find a matching product,
         // it'll return -1. Add the product to the cart.
@@ -204,9 +249,7 @@ export const cartSlice = createSlice({
         // action.payload is of type ProductIdQty
         state.updateCartStatus = "succeeded";
         state.updateCartError = false;
-        const idx = state.cart?.findIndex(
-          (obj) => obj.product_id === action.payload.product_id
-        );
+        const idx = state.cart?.findIndex((obj) => obj.product_id === action.payload.product_id);
 
         // This if statement is probably unnecessary,
         // but it doesn't hurt to have code that doesn't potentially crash
@@ -226,10 +269,9 @@ export const cartSlice = createSlice({
         // action.payload contains the product_id we are trying to delete
         state.removeFromCartStatus = "succeeded";
         state.removeFromCartError = false;
+        // Remove product from cart
         if (state.cart) {
-          state.cart = state.cart.filter(
-            (product) => product.product_id !== action.payload
-          );
+          state.cart = state.cart.filter((product) => product.product_id !== action.payload);
         }
       })
       .addCase(syncCartToDatabase.pending, (state) => {
@@ -256,5 +298,6 @@ export const selectTotalPrice = (state: RootState) => {
       }, 0)
     : 0;
 };
+export const { clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
