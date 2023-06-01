@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Root, { loader as rootLoader } from "./routes/Root";
@@ -16,6 +15,10 @@ import Products from "./routes/Products";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import Cart from "./routes/Cart";
+import Checkout from "./routes/Checkout";
+import Orders from "./routes/Orders";
+import Order from "./routes/Order";
+import Confirmation from "./routes/Confirmation";
 const persistor = persistStore(store);
 
 const router = createBrowserRouter([
@@ -59,16 +62,32 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart />,
       },
+      /* CHECKOUT ROUTE */
+      {
+        path: "/checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "/checkout/confirmation",
+        element: <Confirmation />,
+      },
+      /* ORDERS ROUTE */
+      {
+        path: "/orders",
+        element: <Orders />,
+      },
+      {
+        path: "/orders/:order_id",
+        element: <Order />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider>
 );
