@@ -41,22 +41,23 @@ const CartProduct = ({ product }: Props) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center md:flex-row border-b-2 p-4">
+    <div className="flex flex-col items-center border-b-2 p-4 md:flex-row">
       <div className="min-w-[200px]">
-        <img src={product.img} alt={product.title} className="max-h-[200px] max-w-[200px] m-auto" />
+        <img src={product.img} alt={product.title} className="m-auto max-h-[200px] max-w-[200px]" />
       </div>
-      <div className="md:p-2">
-        <h1 className="text-xl font-semibold text-left">{product.title}</h1>
+      <div className="flex-auto basis-1/2 md:p-2">
+        <h1 className="text-left text-xl font-semibold">{product.title}</h1>
         <p className="hidden md:block">{product.description}</p>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-auto flex-col items-center">
         <p className="font-semibold">Price: ${product.price}/ea</p>
         <div className="flex gap-1">
           <select
             name="quantity"
             id="quantity"
-            className="bg-sky-900 text-white px-4 py-2 rounded-lg"
-            defaultValue={product.qty}
+            className="rounded-lg bg-sky-900 px-4 py-2 text-white"
+            // defaultValue={product.qty}
+            value={product.qty}
             onChange={(e) => updateProductInCart(parseInt(e.target.value))}
           >
             {[...new Array(99)].map((_, index) => (
@@ -71,7 +72,7 @@ const CartProduct = ({ product }: Props) => {
           buttonAction={updateProductInCart}
         /> */}
           <button className="text-white" onClick={() => removeProductFromCart(product.product_id)}>
-            <TbTrashOff size={"1.3rem"} title="Remove from cart" />
+            <TbTrashOff size={24} title="Remove from cart" />
           </button>
         </div>
       </div>
