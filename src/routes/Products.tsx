@@ -16,7 +16,7 @@ const Products = () => {
       await dispatch(getProducts());
     };
     if (products === null || products.length === 0) fetchProducts();
-  }, [products]);
+  }, []);
 
   if (!products) {
     return <h1>Oh no! No products found.</h1>;
