@@ -17,7 +17,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       if (isLoggedIn) {
         const response = await dispatch(getOrders()).unwrap();
-        if (response.error === "Unauthenticated") {
+        if (response.error) {
           // Old session still active,
           // update Redux state
           dispatch(logout());

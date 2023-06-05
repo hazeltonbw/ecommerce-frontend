@@ -1,4 +1,5 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import api from "../api";
 
 export interface UserObject {
   user_id?: Number;
@@ -14,7 +15,8 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   // https://vitejs.dev/guide/env-and-mode.html
   const API_URL = import.meta.env.VITE_API_URL;
   try {
-    return fetch(`${API_URL}/users/${params.user_id}`);
+    const response = await api(`${API_URL}/users/${params.user_id}`);
+    return response.data;
   } catch (err) {
     return {
       error: err,
@@ -25,6 +27,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 function User() {
   let user = useLoaderData() as UserObject;
+  console.log(user);
 
   if (!user)
     return (

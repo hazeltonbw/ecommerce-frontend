@@ -1,8 +1,8 @@
-import React from "react";
-import User, { UserObject } from "./User";
-import { useLoaderData } from "react-router-dom";
-
-type Props = {};
+import { UserObject } from "./User";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { Unauthenticated } from "../features/auth/authSlice";
+import { useEffect } from "react";
+import api from "../api";
 
 export const loader = async () => {
   // Vite has a different way to access environment variables
@@ -10,14 +10,22 @@ export const loader = async () => {
   // console.log(import.meta.env.VITE_API_URL);
   const API_URL = import.meta.env.VITE_API_URL;
   try {
-    return fetch(`${API_URL}/users/`);
+    const response = await api(`${API_URL}/users/`);
+    return response.data;
   } catch (err) {
     return { error: err };
   }
 };
 
-const Users = (props: Props) => {
-  const users = useLoaderData() as [UserObject];
+const Users = () => {
+  const navigate = useNavigate();
+  const users = useLoaderData() as [UserObject] & Unauthenticated;
+
+  useEffect(() => {
+    if (users.error) {
+      navigate("/auth/login");
+    }
+  });
   return (
     <div className="users">
       {users.length ? (
