@@ -44,9 +44,9 @@ const Cart = () => {
   return (
     <div className="flex flex-col p-4">
       <h1 className="border-b-2 border-black text-center text-2xl leading-10">Your Cart</h1>
-      {cart?.map((product: CartProductT) =>
-        product.deleted ? null : <CartProduct product={product} key={product.product_id} />
-      )}
+      {cart?.map((product: CartProductT) => (
+        <CartProduct product={product} key={product.product_id} />
+      ))}
       <div
         className="fixed 
         inset-x-0
