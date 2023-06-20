@@ -1,7 +1,7 @@
 import { PaymentElement, useStripe, useElements, AddressElement } from "@stripe/react-stripe-js";
 import FormErrorText from "../components/FormErrorText";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useAppDispatch } from "../hooks";
 import { clearCheckoutState } from "../features/checkout/checkoutSlice";
 import { clearCart } from "../features/cart/cartSlice";
@@ -46,10 +46,10 @@ const CheckoutForm = () => {
             setMessage("Your payment is processing.");
           case "requires_payment_method":
             break;
-            console.error("Your payment was not successful, please try again.");
-            setError(true);
-            setMessage("Your payment was not successful, please try again.");
-            break;
+          // console.error("Your payment was not successful, please try again.");
+          // setError(true);
+          // setMessage("Your payment was not successful, please try again.");
+          // break;
           default:
             console.error("Something went wrong.");
             setError(true);
@@ -60,7 +60,7 @@ const CheckoutForm = () => {
     });
   }, [stripe]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     setSubmitting(true);

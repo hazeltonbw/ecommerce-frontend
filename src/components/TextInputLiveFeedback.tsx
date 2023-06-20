@@ -4,6 +4,14 @@ import { FcCheckmark } from "react-icons/fc";
 import PasswordField from "./PasswordField";
 
 // https://formik.org/docs/examples/instant-feedback
+type Props = {
+  label: string;
+  id: string;
+  name: string;
+  helpText: string;
+  type: string;
+  autoComplete?: string;
+};
 export const TextInputLiveFeedback = ({
   label,
   helpText,
@@ -43,12 +51,12 @@ export const TextInputLiveFeedback = ({
           <PasswordField {...props} {...field} />
         ) : (
           <input
-            {...props}
+            // TODO: Fix unknown TS error... change to {...props} to error out again
+            {...(props as Props)}
             {...field}
-            className={`w-full ${props.type === "password" ? "pr-10" : ""}`}
+            className="w-full"
             aria-describedby={`${props.id}-feedback ${props.id}-help`}
             onFocus={handleFocus}
-            // autoComplete="new-password"
           />
         )}
       </div>
