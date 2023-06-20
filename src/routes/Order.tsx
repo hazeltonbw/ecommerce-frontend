@@ -47,7 +47,7 @@ const Order = ({ orderP }: Props) => {
             className="flex flex-row gap-4 border-b-2 border-b-gray-100 p-4"
           >
             <div className="m-auto max-w-[50px] sm:block sm:max-w-[100px]">
-              <img src={product.product.imgURL} alt={product.product.title} />
+              <img src={product.product.url} alt={product.product.title} />
             </div>
             <h1 className="flex-1 self-center font-semibold">
               {product.product.title.substring(0, 20)}

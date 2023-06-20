@@ -13,7 +13,7 @@ export type Order = {
   product_id: number;
   qty: number;
   title: string;
-  img: string;
+  url: string;
   total: number;
 };
 
@@ -24,7 +24,7 @@ export type ProductDetails = {
     title: string;
     price: number;
     description: string;
-    imgURL: string;
+    url: string;
   };
   qty: number;
   total: number;
