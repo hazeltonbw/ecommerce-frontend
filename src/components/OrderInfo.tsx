@@ -14,7 +14,7 @@ const OrderInfo = () => {
 
   useEffect(() => {
     const getOrder = async () => {
-      dispatch(getOrderById(parseInt(order_id)));
+      dispatch(getOrderById(Number(order_id)));
     };
     const getRecentOrder = async () => {
       dispatch(fetchRecentOrder());
