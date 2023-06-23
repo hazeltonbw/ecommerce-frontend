@@ -81,7 +81,7 @@ const CheckoutForm = () => {
             //`Elements` instance that was used to create the Payment Element
             elements,
             confirmParams: {
-                return_url: import.meta.env.PROD ? "https://www.bwh-ecommerce.netlify.app/checkout" : "http://localhost:5173/checkout",
+                return_url: import.meta.env.PROD ? "https://ecommerce-frontend-cs5n.onrender.com/checkout" : "http://localhost:5173/checkout",
             },
         });
 

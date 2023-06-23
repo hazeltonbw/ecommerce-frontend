@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import React from "react";
 import "./index.css";
 import Root, { loader as rootLoader } from "./routes/Root";
 import User, { loader as userLoader } from "./routes/User";
@@ -22,72 +23,72 @@ import Confirmation from "./routes/Confirmation";
 const persistor = persistStore(store);
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      /* AUTH ROUTES */
-      {
-        path: "auth/register",
-        element: <Register />,
-      },
-      {
-        path: "auth/login",
-        element: <Login />,
-      },
-      /* USER ROUTES */
-      {
-        path: "users",
-        element: <Users />,
-        loader: usersLoader,
-      },
-      {
-        path: "users/:user_id",
-        element: <User />,
-        loader: userLoader,
-      },
-      /* PRODUCT ROUTES */
-      {
-        path: "/products",
-        element: <Products />,
-      },
-      /* CART ROUTE */
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      /* CHECKOUT ROUTE */
-      {
-        path: "/checkout",
-        element: <Checkout />,
-      },
-      {
-        path: "/checkout/confirmation",
-        element: <Confirmation />,
-      },
-      /* ORDERS ROUTE */
-      {
-        path: "/orders",
-        element: <Orders />,
-      },
-      {
-        path: "/orders/:order_id",
-        element: <Order />,
-      },
-    ],
-  },
+    {
+        path: "/",
+        element: <Root />,
+        errorElement: <ErrorPage />,
+        loader: rootLoader,
+        children: [
+            {
+                index: true,
+                element: <Home />,
+            },
+            /* AUTH ROUTES */
+            {
+                path: "auth/register",
+                element: <Register />,
+            },
+            {
+                path: "auth/login",
+                element: <Login />,
+            },
+            /* USER ROUTES */
+            {
+                path: "users",
+                element: <Users />,
+                loader: usersLoader,
+            },
+            {
+                path: "users/:user_id",
+                element: <User />,
+                loader: userLoader,
+            },
+            /* PRODUCT ROUTES */
+            {
+                path: "/products",
+                element: <Products />,
+            },
+            /* CART ROUTE */
+            {
+                path: "/cart",
+                element: <Cart />,
+            },
+            /* CHECKOUT ROUTE */
+            {
+                path: "/checkout",
+                element: <Checkout />,
+            },
+            {
+                path: "/checkout/confirmation",
+                element: <Confirmation />,
+            },
+            /* ORDERS ROUTE */
+            {
+                path: "/orders",
+                element: <Orders />,
+            },
+            {
+                path: "/orders/:order_id",
+                element: <Order />,
+            },
+        ],
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <RouterProvider router={router} />
-    </PersistGate>
-  </Provider>
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <RouterProvider router={router} />
+        </PersistGate>
+    </Provider>
 );
