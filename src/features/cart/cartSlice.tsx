@@ -116,7 +116,7 @@ export const removeFromCart = createAsyncThunk<number, number>(
     }
 );
 
-export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | undefined, Array<CartProductT> | null>(
+export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | null, Array<CartProductT> | null>(
     "/syncCarts",
     async (cart: Array<CartProductT> | null, { dispatch, rejectWithValue, fulfillWithValue }) => {
         try {
@@ -126,7 +126,7 @@ export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | undefin
                 });
             }
             // Get the updated cart and update state in extraReducers
-            const response = await api.get<Array<CartProductT>>("/cart");
+            const response = await api.get("/cart");
             if (response.data == undefined) {
                 fulfillWithValue(null)
             }
