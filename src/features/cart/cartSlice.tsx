@@ -116,9 +116,9 @@ export const removeFromCart = createAsyncThunk<number, number>(
     }
 );
 
-export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | undefined, Array<CartProductT>>(
+export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | undefined, Array<CartProductT> | null>(
     "/syncCarts",
-    async (cart: Array<CartProductT> | null, { dispatch }: RootState) => {
+    async (cart: Array<CartProductT> | null, { dispatch, rejectWithValue, fulfillWithValue }) => {
         try {
             if (cart != null) {
                 cart.map(async (product: CartProductT) => {
@@ -127,8 +127,13 @@ export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | undefin
             }
             // Get the updated cart and update state in extraReducers
             const response = await api.get<Array<CartProductT>>("/cart");
+            if (response.data == undefined) {
+                fulfillWithValue(null)
+            }
+            fulfillWithValue(response.data);
             return response.data;
         } catch (err) {
+            rejectWithValue(null);
             console.error(err);
         }
     }
