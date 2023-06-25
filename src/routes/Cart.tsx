@@ -73,13 +73,28 @@ const Cart = () => {
                     {cart.reduce((acc: number, product: CartProductT) => acc + product.qty, 0)} item(s)
                 </h1>
                 <h1 className="text-xl">{`Subtotal: $${totalPrice}`}</h1>
-                <Link
-                    to="/checkout"
-                    className="flex items-center gap-1 rounded-lg bg-sky-700 px-4 py-2 text-xl"
-                >
-                    Checkout
-                    <AiOutlineArrowRight size={24} />
-                </Link>
+                {
+                    isLoggedIn ? (
+                        <Link
+                            to="/checkout"
+                            className="flex items-center gap-1 rounded-lg bg-sky-700 px-4 py-2 text-xl"
+                        >
+                            Checkout
+                            <AiOutlineArrowRight size={24} />
+                        </Link>
+
+                    ) : (
+                        // TODO: Implement checkout redirection after login
+                        <Link
+                            to="/auth/login"
+                            className="flex items-center gap-1 rounded-lg bg-sky-700 px-4 py-2 text-xl"
+                        >
+                            Login to checkout
+                            <AiOutlineArrowRight size={24} />
+                        </Link>
+
+                    )
+                }
             </div>
         </div>
     );
