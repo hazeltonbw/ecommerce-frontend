@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppDispatch } from "../store";
 import Product from "../components/Product";
 import type { Product as ProductType } from "../components/Product";
+import { Toaster } from "react-hot-toast";
 
 const Products = () => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Products = () => {
 
   return products.length > 0 ? (
     <div className="flex flex-wrap gap-y-4 gap-x-4 p-4 justify-center">
+      <Toaster />
       {products.length > 0 &&
         products.map((product: ProductType) => (
           <Product key={product.product_id} product={product} />

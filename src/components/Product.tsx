@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-hot-toast";
 import { addToCart } from "../features/cart/cartSlice";
 import { useAppDispatch } from "../hooks";
 import QuantityPicker from "./QuantityPicker";
@@ -19,20 +20,19 @@ const Product = ({ product }: Props) => {
   const dispatch = useAppDispatch();
   const addProductToCart = async (qty: number) => {
     try {
-      // TODO:
-      // Maybe consider using this dispatch vvvvvvvvvvvvv
-      // Put it in a try/catch block
-      // Save it in a variable, call unwrap()
-      // Check the data, if response is good then we can
-      // display an animation or text saying product was added to cart
-      //dispatch(addToCart({ product_id: product.product_id, qty }));
-      dispatch(addToCart({ ...product, qty: qty }));
+      toast.promise(
+        dispatch(addToCart({ ...product, qty: qty })), {
+        loading: `Adding ${product.title} to cart...`,
+        success: `(${qty}) ${product.title} added to cart.`,
+        error: `Could not add ${product.title} to cart. Please try again.`
+      }
+      );
     } catch (err) {
       console.error(err)
     }
   };
   return (
-    <div className="flex flex-col w-full overflow-hidden rounded shadow-lg sm:max-w-xs p-4 justify-center">
+    <div className="flex flex-col w-full overflow-hidden rounded shadow-lg sm:max-w-xs p-4 relative">
       <img src={product.img} alt={product.title} className="sm:max-h-[200px] object-contain" />
       <div className="px-6 py-4 flex-1">
         <h1 className="capitalize">
