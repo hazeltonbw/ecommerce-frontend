@@ -33,36 +33,36 @@ const Order = ({ orderP }: Props) => {
           <div className="flex flex-col">
             <h1>Order placed: </h1>
             <p className="font-thin">{moment(order.date).calendar()}</p>
-        </div>
-        <div className="flex flex-col items-end">
-          <p className="uppercase">
-            Order# <span className="font-semibold">{order.order_id}</span>
-          </p>
-          <p className="font-semibold">Total: ${order.order_total}</p>
-        </div>
-      </div>
-      {order.products.map((product: ProductDetails) => (
-        <div
-          key={product.product.product_id}
-          className="flex flex-row gap-4 border-b-2 border-b-gray-100 p-4"
-        >
-          <div className="m-auto max-w-[50px] sm:block sm:max-w-[100px]">
-            <img src={product.product.url} alt={product.product.title} />
           </div>
-          <h1 className="flex-1 self-center font-semibold">
-            {product.product.title.substring(0, 20)}
-          </h1>
-          <div className="flex items-center">
-            <p>
-              {product.qty} <span className="font-semibold">x</span> $
-              {product.product.price.toFixed(2)}
+          <div className="flex flex-col items-end">
+            <p className="uppercase">
+              Order# <span className="font-semibold">{order.order_id}</span>
             </p>
+            <p className="font-semibold">Total: ${order.order_total}</p>
           </div>
         </div>
-      ))}
-    </div>
-        </div >
-    );
+        {order.products.map((product: ProductDetails) => (
+          <div
+            key={product.product.product_id}
+            className="flex flex-row gap-4 border-b-2 border-b-gray-100 p-4"
+          >
+            <div className="m-auto max-w-[50px] sm:block sm:max-w-[100px]">
+              <img src={product.product.url} alt={product.product.title} />
+            </div>
+            <h1 className="flex-1 self-center font-semibold">
+              {product.product.title.substring(0, 60)}
+            </h1>
+            <div className="flex items-center">
+              <p>
+                {product.qty} <span className="font-semibold">x</span> $
+                {product.product.price.toFixed(2)}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div >
+  );
 };
 
 export default Order;
