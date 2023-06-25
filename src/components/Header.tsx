@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { logout, selectFirstName, selectIsLoggedIn, clearState } from "../features/auth/authSlice";
 
@@ -10,6 +10,7 @@ import imgUrl from "../assets/Shoppo.png";
 const Header = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
@@ -27,6 +28,7 @@ const Header = () => {
     dispatch(logout());
     dispatch(clearState());
     setIsDisabled(false);
+    navigate("/");
   };
 
   return (
@@ -157,15 +159,13 @@ const Header = () => {
         >
           <div className="space-y-2">
             <span
-              className={`block h-0.5 w-8 bg-white ${
-                mobileMenuIsOpen && "origin-top-left rotate-45"
-              }`}
+              className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "origin-top-left rotate-45"
+                }`}
             ></span>
             <span className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "hidden"}`}></span>
             <span
-              className={`block h-0.5 w-8 bg-white ${
-                mobileMenuIsOpen && "origin-bottom-left translate-y-[0.8rem] -rotate-45"
-              }`}
+              className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "origin-bottom-left translate-y-[0.8rem] -rotate-45"
+                }`}
             ></span>
           </div>
         </div>
