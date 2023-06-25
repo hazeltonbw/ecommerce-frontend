@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { logout, selectFirstName, selectIsLoggedIn, clearState } from "../features/auth/authSlice";
+import type { CartProductT } from "./CartProduct";
 
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
@@ -15,7 +16,7 @@ const Header = () => {
   const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   const itemsInCart = useAppSelector((state) =>
-    state.cart.cart != null ? state.cart.cart.length : 0
+    state.cart.cart != null ? state.cart.cart.reduce((acc: number, product: CartProductT) => acc + product.qty, 0) : 0
   );
 
   const closeMobileMenu = () => {
