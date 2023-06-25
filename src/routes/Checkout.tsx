@@ -56,9 +56,9 @@ const Checkout = () => {
               <div className="w-[100px] flex-shrink-0 self-center">
                 <img src={product.img} alt={product.title} />
               </div>
-              <div className="flex flex-col justify-center pl-8">
+              <div className="flex flex-col sm:ml-8 items-start p-4">
                 <h1>{product.title}</h1>
-                <p>Qty: {product.qty}</p>
+                <p className="font-thin">Qty: {product.qty}</p>
                 <p className="font-bold">${(product.qty * product.price).toFixed(2)}</p>
               </div>
             </div>
