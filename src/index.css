@@ -29,7 +29,6 @@ code {
 html,
 body {
   height: 100%;
-  margin: 0;
   line-height: 1.5;
   color: #121212;
 }
@@ -42,7 +41,7 @@ button {
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-  background-color: theme("colors.sky.900");
+  background-color: theme("colors.sky.800");
   /* background-color: white; */
   line-height: 1.5;
   outline: none;
@@ -50,12 +49,23 @@ button {
   color: white;
 }
 
+a {
+  transition: all 0.3s ease-in-out;
+}
+
+a:hover,
+button:hover {
+  background-color: theme("colors.sky.700");
+}
+
+
 input:focus {
   outline: none;
 }
 button {
   color: #3992ff;
   font-weight: 500;
+  transition: all 0.3s ease-in-out;
 }
 
 textarea:hover,
@@ -90,9 +100,9 @@ button:active {
 .valid input[type="text"],
 .valid input[type="number"],
 .valid input[type="password"] {
-  border: 2px solid #79c14d;
+  border: 2px solid theme("colors.green.600");
 }
 
 input:autofill {
-  background-color: theme("colors.green.500");
+  background-color: theme("colors.teal.700");
 }
