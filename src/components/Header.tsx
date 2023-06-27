@@ -132,6 +132,7 @@ const Header = () => {
             <Link
               to="/cart"
               onClick={closeMobileMenu}
+              aria-label="Cart"
               className="
               flex items-center justify-center
                 rounded-lg p-4 text-center hover:border-sky-700 hover:bg-sky-700 hover:text-white hover:shadow-gray-800/50"
@@ -143,7 +144,6 @@ const Header = () => {
                 >
                   {itemsInCart}
                 </span>
-
                 <AiOutlineShoppingCart size={24} title="View cart" />
               </div>
             </Link>

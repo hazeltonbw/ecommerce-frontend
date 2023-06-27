@@ -1,3 +1,4 @@
+import React from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,7 @@ const ProductsLink = () => {
         to="/products"
       >
         <span>View our amazing products</span>
-        <AiOutlineArrowRight />
+        <AiOutlineArrowRight aria-label="arrow right" />
       </Link>
     </div>
   );
