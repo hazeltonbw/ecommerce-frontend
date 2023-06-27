@@ -1,3 +1,4 @@
+import React from "react";
 import { isRouteErrorResponse, useRouteError, Link } from "react-router-dom";
 
 export default function ErrorPage() {
@@ -5,11 +6,6 @@ export default function ErrorPage() {
   console.error(error);
 
   return (
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: center;
-    // width: 100%;
     <div className="flex flex-col justify-center items-center bg-gray-800 w-full min-h-full text-white">
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
@@ -18,7 +14,7 @@ export default function ErrorPage() {
           {error.status} {error.statusText}
         </p>
       ) : (
-        <p>"Unknown error!"</p>
+        <p>Unknown error!</p>
       )}
       <Link to={"/"} className="border-2 border-gray-700 p-2 rounded-xl">
         Take me to safety!
