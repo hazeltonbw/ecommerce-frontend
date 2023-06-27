@@ -1,3 +1,4 @@
+import React from "react";
 type Props = { error: boolean; message: string };
 
 const FormErrorText = ({ error, message }: Props) => {

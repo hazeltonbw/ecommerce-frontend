@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import {
@@ -6,14 +7,12 @@ import {
   ProductDetails,
   selectOrder,
 } from "../features/orders/ordersSlice";
-import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 type Props = {
   orderP?: OrderDetails | null;
 };
 const Order = ({ orderP }: Props) => {
   const { order_id } = useParams();
-  console.log(order_id);
   const dispatch = useAppDispatch();
   const order = orderP != null ? orderP : useAppSelector(selectOrder);
 

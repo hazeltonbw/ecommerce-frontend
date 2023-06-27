@@ -74,15 +74,12 @@ export const register = createAsyncThunk<UserObject, object>(
   async (values, { fulfillWithValue, rejectWithValue }) => {
     try {
       const response: AxiosResponse = await api.post("/auth/register", values);
-      console.log(response.data);
       return fulfillWithValue(response.data);
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         return rejectWithValue(err.response?.data);
-        // console.log("Rejecting with value", err);
-        // return rejectWithValue(err);
       }
     }
   }

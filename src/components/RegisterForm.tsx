@@ -7,7 +7,7 @@ import { TextInputLiveFeedback } from "./TextInputLiveFeedback";
 import FormSubmitButton from "./FormSubmitButton";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { login, register } from "../features/auth/authSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FormErrorText from "./FormErrorText";
 import { UserObject } from "../routes/User";
 import { selectCart, syncCartToDatabase } from "../features/cart/cartSlice";
@@ -72,7 +72,6 @@ const RegisterForm = () => {
                 await dispatch(syncCartToDatabase(loggedOutCart));
               }
 
-              console.log(response);
             }
           } catch (err) {
             console.error(err);

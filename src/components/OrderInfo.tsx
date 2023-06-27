@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { fetchRecentOrder, getOrderById } from "../features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
@@ -9,8 +9,6 @@ const OrderInfo = () => {
   const { order_id } = useParams();
   const dispatch = useAppDispatch();
   const order: Order = useAppSelector(selectOrder);
-  console.log(order_id);
-  console.log(order);
 
   useEffect(() => {
     const getOrder = async () => {
@@ -36,7 +34,7 @@ const OrderInfo = () => {
   else
     return (
       <div>
-        <h1>Couldn't find that order, sorry.</h1>
+        <h1>Couldn&apos;t find that order, sorry.</h1>
       </div>
     );
 };

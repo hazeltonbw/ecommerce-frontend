@@ -9,39 +9,39 @@ import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } fro
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const persistConfig = {
-    key: "root",
-    storage,
+  key: "root",
+  storage,
 };
 
 const appReducer = combineReducers({
-    auth: authReducer,
-    product: productReducer,
-    cart: cartReducer,
-    checkout: checkoutReducer,
-    orders: ordersReducer,
+  auth: authReducer,
+  product: productReducer,
+  cart: cartReducer,
+  checkout: checkoutReducer,
+  orders: ordersReducer,
 });
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-    if (action.type === "auth/clearState") {
-        // this applies to all keys defined in persistConfig(s)
-        storage.removeItem("persist:root");
+  if (action.type === "auth/clearState") {
+    // this applies to all keys defined in persistConfig(s)
+    storage.removeItem("persist:root");
 
-        state = {} as RootState;
-    }
-    return appReducer(state, action);
+    state = {} as RootState;
+  }
+  return appReducer(state, action);
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    // https://redux-toolkit.js.org/api/getDefaultMiddleware
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+  reducer: persistedReducer,
+  // https://redux-toolkit.js.org/api/getDefaultMiddleware
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

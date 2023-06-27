@@ -1,10 +1,10 @@
+import React, { useEffect } from "react";
 import { CartProductT } from "../components/CartProduct";
 import { selectCart, selectTotalPrice } from "../features/cart/cartSlice";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
-import React, { useEffect } from "react";
 import { createPaymentIntent, selectClientSecret } from "../features/checkout/checkoutSlice";
 import ProductsLink from "../components/ProductsLink";
 

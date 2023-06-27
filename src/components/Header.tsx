@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { logout, selectFirstName, selectIsLoggedIn, clearState } from "../features/auth/authSlice";
 import type { CartProductT } from "./CartProduct";

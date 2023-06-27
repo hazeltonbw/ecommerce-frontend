@@ -1,5 +1,5 @@
-import { Formik, Form } from "formik";
 import React from "react";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
@@ -9,7 +9,6 @@ import { useAppSelector, useAppDispatch } from "../hooks";
 import { selectCart, syncCartToDatabase } from "../features/cart/cartSlice";
 import { CartProductT } from "./CartProduct";
 import FormErrorText from "./FormErrorText";
-import { Link } from "react-router-dom";
 import AuthSwitchHelper from "./AuthSwitchHelper";
 
 const LoginSchema = Yup.object().shape({
@@ -32,11 +31,9 @@ const LoginForm = () => {
         }}
         validationSchema={LoginSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log("Attempting to login...");
           try {
             const response = await dispatch(login(values));
             if (response.payload.status === 200) {
-              console.log("Syncing carts...");
 
               let loggedOutCart;
               if (cart != null) {

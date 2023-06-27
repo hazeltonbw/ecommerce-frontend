@@ -1,5 +1,5 @@
-import ProductsLink from "./ProductsLink";
 import React from "react";
+import ProductsLink from "./ProductsLink";
 
 const Home = () => {
   return (
