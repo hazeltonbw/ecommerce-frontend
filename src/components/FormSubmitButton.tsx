@@ -1,3 +1,4 @@
+import React from "react";
 import LoadingSpinner from "./LoadingSpinner";
 
 type Props = { buttonText: string; status: string };
@@ -11,9 +12,11 @@ const FormSubmitButton = (props: Props) => {
   const isLoading = props.status === "pending";
 
   return (
-    <button type="submit" className="bg-sky-700 text-white" aria-label={ariaLabel}>
-      {isLoading ? <LoadingSpinner /> : props.buttonText}
-    </button>
+    <button type="submit" className="bg-sky-900 text-white" aria-label={ariaLabel}>
+      <div className="flex justify-center gap-4">
+        {isLoading ? <LoadingSpinner /> : props.buttonText}
+      </div>
+    </button >
   );
 };
 
