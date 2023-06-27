@@ -1,5 +1,5 @@
-import { Formik, Form } from "formik";
 import React from "react";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 YupPassword(Yup);
@@ -25,9 +25,6 @@ const RegisterSchema = Yup.object().shape({
     .required("Last name is required."),
   email: Yup.string().email("Invalid email").required("Email is required."),
   password: Yup.string().password().required("Password is required."),
-  // passwordConfirm: Yup.string()
-  //     .oneOf([Yup.ref("password")], "Passwords must match")
-  //     .required("Please confirm your password."),
   isadmin: Yup.boolean(),
 });
 
@@ -35,7 +32,7 @@ const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cart = useAppSelector(selectCart);
-  const { registerError, message, status } = useAppSelector((state) => state.auth);
+  const { registerError, message, registerStatus } = useAppSelector((state) => state.auth);
   return (
     <div className="w-[22.5rem] rounded-lg bg-gray-200 p-8 text-black ">
       <h1 className="border border-b-gray-300 text-2xl">Register</h1>
@@ -52,7 +49,7 @@ const RegisterForm = () => {
           try {
             const response = await dispatch(register(values));
             if (response.meta?.requestStatus === "fulfilled") {
-              // Login route doesn't care about these properties
+              // Login backend route doesn't care about these properties
               // ... so delete them
               delete values.fname;
               delete values.lname;
@@ -99,14 +96,6 @@ const RegisterForm = () => {
             type="password"
             autoComplete="new-password"
           />
-          {/* <TextInputLiveFeedback */}
-          {/*     label="Confirm password" */}
-          {/*     id="passwordConfirm" */}
-          {/*     name="passwordConfirm" */}
-          {/*     helpText="" */}
-          {/*     type="password" */}
-          {/*     autoComplete="new-password" */}
-          {/* /> */}
           <TextInputLiveFeedback
             label="First name"
             id="fname"
@@ -121,7 +110,7 @@ const RegisterForm = () => {
             helpText=""
             type="text"
           />
-          <FormSubmitButton buttonText="Register" status={status} />
+          <FormSubmitButton buttonText="Register" status={registerStatus} />
           <FormErrorText error={registerError} message={message} />
         </Form>
       </Formik>
