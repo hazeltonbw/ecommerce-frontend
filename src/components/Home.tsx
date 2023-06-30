@@ -12,7 +12,7 @@ const Home = () => {
       <div
         className="flex max-w-sm flex-col items-center gap-4 text-center 
                           md:items-start md:text-left">
-        <h1 className="w-[15ch] text-4xl">
+        <h1 className="w-[15ch] text-5xl">
           eCommerce
           <span className="font-lobster font-extrabold"> Shopping </span>
           App
