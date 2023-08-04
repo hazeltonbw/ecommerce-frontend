@@ -12,18 +12,24 @@ import FormErrorText from "./FormErrorText";
 import AuthSwitchHelper from "./AuthSwitchHelper";
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email address is required."),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email address is required."),
   password: Yup.string().required("Password is required."),
 });
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const { loginError, loginStatus, message } = useAppSelector((state) => state.auth);
+  const { loginError, loginStatus, message } = useAppSelector(
+    (state) => state.auth
+  );
   const cart = useAppSelector(selectCart);
 
   return (
     <div className="flex w-[22.5rem] flex-col rounded-lg bg-gray-200 p-8 text-black">
-      <h1 className="border border-b-gray-300 text-2xl">Login to your account</h1>
+      <h1 className="border border-b-gray-300 text-2xl">
+        Login to your account
+      </h1>
       <Formik
         initialValues={{
           email: "",
@@ -34,7 +40,6 @@ const LoginForm = () => {
           try {
             const response = await dispatch(login(values));
             if (response.payload.status === 200) {
-
               let loggedOutCart;
               if (cart != null) {
                 loggedOutCart = cart.map((product: CartProductT) => {
@@ -63,7 +68,11 @@ const LoginForm = () => {
           <FormSubmitButton buttonText="Login" status={loginStatus} />
         </Form>
       </Formik>
-      <AuthSwitchHelper switchToLink="/auth/register" helpText="Don&apos;t have an account? " linkText="Register here" />
+      <AuthSwitchHelper
+        switchToLink="/auth/register"
+        helpText="Don't have an account? "
+        linkText="Register here"
+      />
     </div>
   );
 };

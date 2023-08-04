@@ -1,7 +1,7 @@
 import { useField, FieldHookConfig } from "formik";
 import React, { useState } from "react";
 import { FcCheckmark } from "react-icons/fc";
-import { CgClose } from "react-icons/cg"
+import { CgClose } from "react-icons/cg";
 import PasswordField from "./PasswordField";
 
 // https://formik.org/docs/examples/instant-feedback
@@ -25,17 +25,24 @@ export const TextInputLiveFeedback = ({
   // - or the input has been visited (touched === true)
   const [didFocus, setDidFocus] = useState(false);
   const handleFocus = () => setDidFocus(true);
-  const showFeedback = (didFocus && field.value?.trim().length > 2) || meta.touched;
+  const showFeedback =
+    (didFocus && field.value?.trim().length > 2) || meta.touched;
 
   return (
     <div
-      className={`form-control relative ${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}
+      className={`form-control relative ${
+        showFeedback ? (meta.error ? "invalid" : "valid") : ""
+      }`}
     >
       <div className="flex flex-col">
-        <div className="flex place-content-between items-center" >
+        <div className="flex place-content-between items-center">
           <label htmlFor={props.id}>{label}</label>{" "}
           {showFeedback ? (
-            <div id={`${props.id}-feedback`} aria-live="polite" className="feedback ">
+            <div
+              id={`${props.id}-feedback`}
+              aria-live="polite"
+              className="feedback "
+            >
               {meta.error ? <CgClose size={16} /> : <FcCheckmark size={16} />}
             </div>
           ) : null}
@@ -54,13 +61,15 @@ export const TextInputLiveFeedback = ({
             onFocus={handleFocus}
           />
         )}
-        {
-          showFeedback && (
-            <div id={`${props.id}-feedback`} aria-live="polite" className="feedback text-sm">
-              {meta.error ? meta.error : null}
-            </div>
-          )
-        }
+        {showFeedback && (
+          <div
+            id={`${props.id}-feedback`}
+            aria-live="polite"
+            className="feedback text-sm"
+          >
+            {meta.error ? meta.error : null}
+          </div>
+        )}
       </div>
       <div className="text-xs" id={`${props.id}-help`} tabIndex={-1}>
         {helpText}

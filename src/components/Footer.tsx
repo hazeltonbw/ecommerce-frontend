@@ -9,7 +9,11 @@ const Footer = () => {
       <span>&copy;{year} Brandon Hazelton</span>
       <ul className="flex gap-2">
         <li>
-          <Link to="https://github.com/hazeltonbw" target="_blank" aria-label="My Github profile">
+          <Link
+            to="https://github.com/hazeltonbw"
+            target="_blank"
+            aria-label="My Github profile"
+          >
             <AiFillGithub size={32} title="My Github profile" />
           </Link>
         </li>

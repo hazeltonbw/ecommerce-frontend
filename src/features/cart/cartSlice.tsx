@@ -44,7 +44,9 @@ export const getCart = createAsyncThunk<Array<CartProductT> & Unauthenticated>(
   "/cart",
   async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await api.get<Array<CartProductT>>("/cart");
+      const response: AxiosResponse = await api.get<Array<CartProductT>>(
+        "/cart"
+      );
       //       success: false,
       // redirectUrl: "/auth/login",
       // message: "Please login again to view your saved cart."
@@ -68,7 +70,10 @@ export const addToCart = createAsyncThunk<CartProductT, CartProductT>(
     if (getState().auth.isLoggedIn) {
       // Add product to cart in database if the user is logged in
       try {
-        await api.post("/cart/add", { product_id: product.product_id, qty: product.qty });
+        await api.post("/cart/add", {
+          product_id: product.product_id,
+          qty: product.qty,
+        });
       } catch (err) {
         console.error(err);
       }
@@ -116,9 +121,15 @@ export const removeFromCart = createAsyncThunk<number, number>(
   }
 );
 
-export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | null, Array<CartProductT> | null>(
+export const syncCartToDatabase = createAsyncThunk<
+  Array<CartProductT> | null,
+  Array<CartProductT> | null
+>(
   "/syncCarts",
-  async (cart: Array<CartProductT> | null, { dispatch, rejectWithValue, fulfillWithValue }) => {
+  async (
+    cart: Array<CartProductT> | null,
+    { dispatch, rejectWithValue, fulfillWithValue }
+  ) => {
     try {
       if (cart != null) {
         cart.map(async (product: CartProductT) => {
@@ -128,7 +139,7 @@ export const syncCartToDatabase = createAsyncThunk<Array<CartProductT> | null, A
       // Get the updated cart and update state in extraReducers
       const response = await api.get("/cart");
       if (response.data == undefined) {
-        fulfillWithValue(null)
+        fulfillWithValue(null);
       }
       fulfillWithValue(response.data);
       return response.data;
@@ -151,11 +162,14 @@ export const cartSlice = createSlice({
         state.status = "pending";
         state.error = false;
       })
-      .addCase(getCart.fulfilled, (state, action: PayloadAction<Array<CartProductT>>) => {
-        state.status = "succeeded";
-        state.error = false;
-        state.cart = action.payload;
-      })
+      .addCase(
+        getCart.fulfilled,
+        (state, action: PayloadAction<Array<CartProductT>>) => {
+          state.status = "succeeded";
+          state.error = false;
+          state.cart = action.payload;
+        }
+      )
       .addCase(getCart.rejected, (state) => {
         state.status = "failed";
         state.error = true;
@@ -176,7 +190,9 @@ export const cartSlice = createSlice({
         // Check if there's a match in the cart for the
         // product the user is trying to add.
         // Save the index to modify the product quantity in the cart later.
-        const idx = state.cart?.findIndex((obj) => obj.product_id === action.payload.product_id);
+        const idx = state.cart?.findIndex(
+          (obj) => obj.product_id === action.payload.product_id
+        );
 
         // If findIndex didn't find a matching product,
         // it'll return -1. Add the product to the cart.
@@ -206,7 +222,9 @@ export const cartSlice = createSlice({
         // action.payload is of type ProductIdQty
         state.updateCartStatus = "succeeded";
         state.updateCartError = false;
-        const idx = state.cart?.findIndex((obj) => obj.product_id === action.payload.product_id);
+        const idx = state.cart?.findIndex(
+          (obj) => obj.product_id === action.payload.product_id
+        );
 
         // This if statement is probably unnecessary,
         // but it doesn't hurt to have code that doesn't potentially crash
@@ -228,7 +246,9 @@ export const cartSlice = createSlice({
         state.removeFromCartError = false;
         // Remove product from cart
         if (state.cart) {
-          state.cart = state.cart.filter((product) => product.product_id !== action.payload);
+          state.cart = state.cart.filter(
+            (product) => product.product_id !== action.payload
+          );
         }
       })
       .addCase(syncCartToDatabase.pending, (state) => {
@@ -251,8 +271,8 @@ export const selectCart = (state: RootState) => state.cart.cart;
 export const selectTotalPrice = (state: RootState) => {
   return state.cart.cart != null
     ? state.cart.cart.reduce((acc: number, product: CartProductT) => {
-      return acc + product.qty * product.price;
-    }, 0)
+        return acc + product.qty * product.price;
+      }, 0)
     : 0;
 };
 export const { clearCart } = cartSlice.actions;

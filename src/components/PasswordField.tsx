@@ -7,9 +7,14 @@ const PasswordField = (props: FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
   const [didFocus, setDidFocus] = useState(false);
   const handleFocus = () => setDidFocus(true);
-  const showFeedback = (didFocus && field.value?.trim().length > 2) || meta.touched;
+  const showFeedback =
+    (didFocus && field.value?.trim().length > 2) || meta.touched;
   return (
-    <div className={`relative ${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}>
+    <div
+      className={`relative ${
+        showFeedback ? (meta.error ? "invalid" : "valid") : ""
+      }`}
+    >
       <Field
         {...props}
         {...field}

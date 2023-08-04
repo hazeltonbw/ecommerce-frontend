@@ -11,7 +11,11 @@ const PasswordInput = () => {
         id="password"
         autoComplete="current-password"
       />
-      <ErrorMessage component="div" className="text-sm text-red-700" name="password" />
+      <ErrorMessage
+        component="div"
+        className="text-sm text-red-700"
+        name="password"
+      />
     </div>
   );
 };

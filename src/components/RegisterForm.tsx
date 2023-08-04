@@ -32,7 +32,9 @@ const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cart = useAppSelector(selectCart);
-  const { registerError, message, registerStatus } = useAppSelector((state) => state.auth);
+  const { registerError, message, registerStatus } = useAppSelector(
+    (state) => state.auth
+  );
   return (
     <div className="w-[22.5rem] rounded-lg bg-gray-200 p-8 text-black ">
       <h1 className="border border-b-gray-300 text-2xl">Register</h1>
@@ -71,7 +73,6 @@ const RegisterForm = () => {
                 });
                 await dispatch(syncCartToDatabase(loggedOutCart));
               }
-
             }
           } catch (err) {
             console.error(err);
@@ -113,7 +114,11 @@ const RegisterForm = () => {
           <FormErrorText error={registerError} message={message} />
         </Form>
       </Formik>
-      <AuthSwitchHelper switchToLink="/auth/login" helpText="Already registered? " linkText="LOGIN" />
+      <AuthSwitchHelper
+        switchToLink="/auth/login"
+        helpText="Already registered? "
+        linkText="LOGIN"
+      />
     </div>
   );
 };

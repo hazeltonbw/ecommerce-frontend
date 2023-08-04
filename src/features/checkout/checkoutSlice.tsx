@@ -21,7 +21,10 @@ export type OrderTotal = { total: number };
 export const createPaymentIntent = createAsyncThunk<string, OrderTotal>(
   "/checkout/create-payment-intent",
   async (order_total: OrderTotal) => {
-    const response: AxiosResponse = await api.post("/checkout/create-payment-intent", order_total);
+    const response: AxiosResponse = await api.post(
+      "/checkout/create-payment-intent",
+      order_total
+    );
     return response.data.clientSecret;
   }
 );
@@ -38,11 +41,14 @@ export const checkoutSlice = createSlice({
         state.status = "pending";
         state.error = false;
       })
-      .addCase(createPaymentIntent.fulfilled, (state, action: PayloadAction<string>) => {
-        state.status = "succeeded";
-        state.error = false;
-        state.clientSecret = action.payload;
-      })
+      .addCase(
+        createPaymentIntent.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.status = "succeeded";
+          state.error = false;
+          state.clientSecret = action.payload;
+        }
+      )
       .addCase(createPaymentIntent.rejected, (state) => {
         state.status = "failed";
         state.error = true;
@@ -50,7 +56,8 @@ export const checkoutSlice = createSlice({
   },
 });
 
-export const selectClientSecret = (state: RootState) => state.checkout.clientSecret;
+export const selectClientSecret = (state: RootState) =>
+  state.checkout.clientSecret;
 export const { clearCheckoutState } = checkoutSlice.actions;
 
 export default checkoutSlice.reducer;

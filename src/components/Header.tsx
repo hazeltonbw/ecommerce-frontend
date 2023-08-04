@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { logout, selectFirstName, selectIsLoggedIn, clearState } from "../features/auth/authSlice";
+import {
+  logout,
+  selectFirstName,
+  selectIsLoggedIn,
+  clearState,
+} from "../features/auth/authSlice";
 import type { CartProductT } from "./CartProduct";
 
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -16,7 +21,12 @@ const Header = () => {
   const fname = useAppSelector(selectFirstName);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   const itemsInCart = useAppSelector((state) =>
-    state.cart.cart != null ? state.cart.cart.reduce((acc: number, product: CartProductT) => acc + product.qty, 0) : 0
+    state.cart.cart != null
+      ? state.cart.cart.reduce(
+          (acc: number, product: CartProductT) => acc + product.qty,
+          0
+        )
+      : 0
   );
 
   const closeMobileMenu = () => {
@@ -36,7 +46,9 @@ const Header = () => {
     <header className="flex items-center justify-between bg-gray-200 p-8 dark:bg-gray-800 dark:text-white">
       <div className="flex ">
         <img src={imgUrl} alt="Shoppo Logo" className="w-16" />
-        {isLoggedIn && <h2 className="p-4 text-center capitalize">{`Hello ${fname}!`}</h2>}
+        {isLoggedIn && (
+          <h2 className="p-4 text-center capitalize">{`Hello ${fname}!`}</h2>
+        )}
       </div>
       <nav className={`flex justify-end px-4`}>
         <ul
@@ -160,13 +172,20 @@ const Header = () => {
         >
           <div className="space-y-2">
             <span
-              className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "origin-top-left rotate-45"
-                }`}
+              className={`block h-0.5 w-8 bg-white ${
+                mobileMenuIsOpen && "origin-top-left rotate-45"
+              }`}
             ></span>
-            <span className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "hidden"}`}></span>
             <span
-              className={`block h-0.5 w-8 bg-white ${mobileMenuIsOpen && "origin-bottom-left translate-y-[0.8rem] -rotate-45"
-                }`}
+              className={`block h-0.5 w-8 bg-white ${
+                mobileMenuIsOpen && "hidden"
+              }`}
+            ></span>
+            <span
+              className={`block h-0.5 w-8 bg-white ${
+                mobileMenuIsOpen &&
+                "origin-bottom-left translate-y-[0.8rem] -rotate-45"
+              }`}
             ></span>
           </div>
         </div>

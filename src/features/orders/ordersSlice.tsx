@@ -56,20 +56,19 @@ const initialState: ordersState = {
   order: null,
 };
 
-export const getOrders = createAsyncThunk<Array<OrderDetails> & Unauthenticated>(
-  "/orders",
-  async () => {
-    const response: AxiosResponse = await api.get("/orders");
-    // if (response.data?.error === "Unauthenticated") {
-    //   return rejectWithValue({ message: "Unauthenticated" });
-    // }
-    // if (response.data?.message != null) {
-    //   return rejectWithValue({ message: response.data.message });
-    // }
-    // return fulfillWithValue(response.data);
-    return response.data;
-  }
-);
+export const getOrders = createAsyncThunk<
+  Array<OrderDetails> & Unauthenticated
+>("/orders", async () => {
+  const response: AxiosResponse = await api.get("/orders");
+  // if (response.data?.error === "Unauthenticated") {
+  //   return rejectWithValue({ message: "Unauthenticated" });
+  // }
+  // if (response.data?.message != null) {
+  //   return rejectWithValue({ message: response.data.message });
+  // }
+  // return fulfillWithValue(response.data);
+  return response.data;
+});
 
 export const createOrder = createAsyncThunk<number>("/orders/new", async () => {
   const response: AxiosResponse = await api.post("/orders/new");

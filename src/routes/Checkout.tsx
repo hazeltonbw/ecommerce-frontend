@@ -5,7 +5,10 @@ import { useAppSelector, useAppDispatch } from "../hooks";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
-import { createPaymentIntent, selectClientSecret } from "../features/checkout/checkoutSlice";
+import {
+  createPaymentIntent,
+  selectClientSecret,
+} from "../features/checkout/checkoutSlice";
 import ProductsLink from "../components/ProductsLink";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -37,7 +40,7 @@ const Checkout = () => {
 
   if (cart == null || cart.length === 0) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2">
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 text-sky-500">
         <h1>You have nothing in your cart to checkout!</h1>
         <ProductsLink />
       </div>
@@ -52,18 +55,25 @@ const Checkout = () => {
             Your order
           </h1>
           {cart?.map((product: CartProductT) => (
-            <div key={product.product_id} className="flex flex-col sm:flex-row border-b-2 border-b-gray-200 p-2">
+            <div
+              key={product.product_id}
+              className="flex flex-col sm:flex-row border-b-2 border-b-gray-200 p-2"
+            >
               <div className="w-[100px] flex-shrink-0 self-center">
                 <img src={product.img} alt={product.title} />
               </div>
               <div className="flex flex-col sm:ml-8 items-start p-4">
                 <h1>{product.title}</h1>
                 <p className="font-thin">Qty: {product.qty}</p>
-                <p className="font-bold">${(product.qty * product.price).toFixed(2)}</p>
+                <p className="font-bold">
+                  ${(product.qty * product.price).toFixed(2)}
+                </p>
               </div>
             </div>
           ))}
-          <h1 className="text-end text-xl font-bold">Total: ${total.toFixed(2)}</h1>
+          <h1 className="text-end text-xl font-bold">
+            Total: ${total.toFixed(2)}
+          </h1>
         </div>
 
         {status === "succeeded" && clientSecret !== "" && (

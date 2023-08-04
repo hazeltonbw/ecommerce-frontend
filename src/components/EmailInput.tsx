@@ -4,9 +4,12 @@ const EmailInput = () => {
   const [field, meta] = useField("email");
   const [didFocus, setDidFocus] = useState(false);
   const handleFocus = () => setDidFocus(true);
-  const showFeedback = (didFocus && field.value?.trim().length > 2) || meta.touched;
+  const showFeedback =
+    (didFocus && field.value?.trim().length > 2) || meta.touched;
   return (
-    <div className={`${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}>
+    <div
+      className={`${showFeedback ? (meta.error ? "invalid" : "valid") : ""}`}
+    >
       <label htmlFor="email">Email address</label>
       <Field
         id="email"

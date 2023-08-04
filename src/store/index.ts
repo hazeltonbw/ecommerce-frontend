@@ -1,11 +1,24 @@
-import { configureStore, combineReducers, AnyAction, Reducer } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  combineReducers,
+  AnyAction,
+  Reducer,
+} from "@reduxjs/toolkit";
 // import slices
 import authReducer from "../features/auth/authSlice";
 import productReducer from "../features/products/productSlice";
 import cartReducer from "../features/cart/cartSlice";
 import checkoutReducer from "../features/checkout/checkoutSlice";
 import ordersReducer from "../features/orders/ordersSlice";
-import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const persistConfig = {

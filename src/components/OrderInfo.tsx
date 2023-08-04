@@ -27,7 +27,8 @@ const OrderInfo = () => {
     return (
       <div>
         <h1 className="text-xl">
-          Your order id is: <span className="font-bold">{`${order.order_id}`}</span>
+          Your order id is:{" "}
+          <span className="font-bold">{`${order.order_id}`}</span>
         </h1>
       </div>
     );

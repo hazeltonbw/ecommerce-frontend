@@ -1,10 +1,18 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { getCart, selectCart, selectTotalPrice } from "../features/cart/cartSlice";
+import {
+  getCart,
+  selectCart,
+  selectTotalPrice,
+} from "../features/cart/cartSlice";
 import CartProduct from "../components/CartProduct";
 import type { CartProductT } from "../components/CartProduct";
 import ProductsLink from "../components/ProductsLink";
-import { clearState, logout, selectIsLoggedIn } from "../features/auth/authSlice";
+import {
+  clearState,
+  logout,
+  selectIsLoggedIn,
+} from "../features/auth/authSlice";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { Toaster } from "react-hot-toast";
@@ -45,7 +53,9 @@ const Cart = () => {
   return (
     <div className="flex flex-col p-4">
       <Toaster />
-      <h1 className="border-b-2 border-black text-center text-2xl leading-10">Your Cart</h1>
+      <h1 className="border-b-2 border-black text-center text-2xl leading-10">
+        Your Cart
+      </h1>
       {cart?.map((product: CartProductT) => (
         <CartProduct product={product} key={product.product_id} />
       ))}
@@ -61,31 +71,31 @@ const Cart = () => {
           Continue shopping
         </Link>
         <h1 className="hidden sm:block">
-          {cart.reduce((acc: number, product: CartProductT) => acc + product.qty, 0)} item(s)
+          {cart.reduce(
+            (acc: number, product: CartProductT) => acc + product.qty,
+            0
+          )}{" "}
+          item(s)
         </h1>
         <h1 className="text-md sm:text-xl">{`Subtotal: $${totalPrice}`}</h1>
-        {
-          isLoggedIn ? (
-            <Link
-              to="/checkout"
-              className="flex items-center gap-1 rounded-lg bg-sky-700 px-4 py-2 text-xl"
-            >
-              Checkout
-              <AiOutlineArrowRight size={24} />
-            </Link>
-
-          ) : (
-            // TODO: Implement checkout redirection after login
-            <Link
-              to="/auth/login"
-              className="flex items-center gap-1 rounded-lg bg-sky-700 text-lg p-1 sm:px-4 sm:py-2 sm:text-xl"
-            >
-              Checkout
-              <AiOutlineArrowRight size={24} />
-            </Link>
-
-          )
-        }
+        {isLoggedIn ? (
+          <Link
+            to="/checkout"
+            className="flex items-center gap-1 rounded-lg bg-sky-700 px-4 py-2 text-xl"
+          >
+            Checkout
+            <AiOutlineArrowRight size={24} />
+          </Link>
+        ) : (
+          // TODO: Implement checkout redirection after login
+          <Link
+            to="/auth/login"
+            className="flex items-center gap-1 rounded-lg bg-sky-700 text-lg p-1 sm:px-4 sm:py-2 sm:text-xl"
+          >
+            Checkout
+            <AiOutlineArrowRight size={24} />
+          </Link>
+        )}
       </div>
     </div>
   );

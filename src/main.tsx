@@ -1,28 +1,34 @@
+import "./index.css";
+// React
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import Root from "./routes/Root";
-import User, { loader as userLoader } from "./routes/User";
-import ErrorPage from "./error-page";
-import Register from "./routes/Register";
-import Login from "./routes/Login";
-import Users, { loader as usersLoader } from "./routes/Users";
-
+// React Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./components/Home";
+
+// Redux
 import { Provider } from "react-redux";
 import { store } from "./store";
-import Products from "./routes/Products";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+
+// Pages & Components
+import Users, { loader as usersLoader } from "./routes/Users";
+import Home from "./components/Home";
+import Login from "./routes/Login";
+import User, { loader as userLoader } from "./routes/User";
+import Register from "./routes/Register";
+import Root from "./routes/Root";
+import ErrorPage from "./error-page";
+import Products from "./routes/Products";
 import Cart from "./routes/Cart";
 import Checkout from "./routes/Checkout";
 import Orders from "./routes/Orders";
 import Order from "./routes/Order";
 import Confirmation from "./routes/Confirmation";
 import { BeatLoader } from "react-spinners";
-const persistor = persistStore(store);
 
+// Persist Store
+const persistor = persistStore(store);
 const router = createBrowserRouter([
   {
     path: "/",

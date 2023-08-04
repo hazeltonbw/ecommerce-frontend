@@ -1,7 +1,15 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { getOrders, OrderDetails, selectOrders } from "../features/orders/ordersSlice";
-import { logout, clearState, selectIsLoggedIn } from "../features/auth/authSlice";
+import {
+  getOrders,
+  OrderDetails,
+  selectOrders,
+} from "../features/orders/ordersSlice";
+import {
+  logout,
+  clearState,
+  selectIsLoggedIn,
+} from "../features/auth/authSlice";
 import ProductsLink from "../components/ProductsLink";
 import { useNavigate } from "react-router-dom";
 import Order from "./Order";

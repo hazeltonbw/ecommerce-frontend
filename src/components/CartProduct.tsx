@@ -42,7 +42,11 @@ const CartProduct = ({ product }: Props) => {
   return (
     <div className="flex flex-col items-center border-b-2 p-4 md:flex-row">
       <div className="min-w-[200px]">
-        <img src={product.img} alt={product.title} className="m-auto max-h-[200px] max-w-[200px]" />
+        <img
+          src={product.img}
+          alt={product.title}
+          className="m-auto max-h-[200px] max-w-[200px]"
+        />
       </div>
       <div className="flex-auto basis-1/2 md:p-2">
         <h1 className="text-left text-xl font-semibold">{product.title}</h1>
@@ -65,7 +69,10 @@ const CartProduct = ({ product }: Props) => {
               </option>
             ))}
           </select>
-          <button className="text-white" onClick={() => removeProductFromCart(product.product_id)}>
+          <button
+            className="text-white"
+            onClick={() => removeProductFromCart(product.product_id)}
+          >
             <TbTrashOff size={24} title="Remove from cart" />
           </button>
         </div>

@@ -60,7 +60,7 @@ const Order = ({ orderP }: Props) => {
           </div>
         ))}
       </div>
-    </div >
+    </div>
   );
 };
 
